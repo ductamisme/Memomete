@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="title_setUpPin">Pick a PIN</string>
+    <string name="description_setUpPin">So no one else but you can unlock your wallet.</string>
+    <string name="tip_setUpPin">PINs are just as secure as long passwords, but easier to use and remember.</string>
+
+    <string name="title_confirmPin">Type your PIN again</string>
+    <string name="description_confirmPin">There will be NO Restore PIN button. Make sure you remember it.</string>
+    <string name="tip_confirmPin">Since you are going to be your own bank, we wont be able to help if you lose your PIN.</string>
+</resources>

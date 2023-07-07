@@ -1,0 +1,19 @@
+CREATE TABLE InformationDatabase (
+     name TEXT NOT NULL,
+     email TEXT NOT NULL
+);
+
+getAllInfor:
+SELECT *
+FROM InformationDatabase;
+
+updateInfor:
+UPDATE InformationDatabase
+SET name = ?, email = ?;
+
+insertInfor:
+INSERT INTO InformationDatabase(name, email)
+VALUES (?,?);
+
+deleteAllInfor:
+DELETE FROM InformationDatabase;

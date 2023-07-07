@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="title_setUpPin">Cài đặt mã PIN</string>
+    <string name="description_setUpPin">Để không ai khác ngoài bạn có thể mở khoá ví.</string>
+    <string name="tip_setUpPin">Mã PIN cũng an toàn như mật khẩu dài, nhưng dễ sử dụng và dễ nhớ hơn.</string>
+
+    <string name="title_confirmPin">Nhập lại mã PIN</string>
+    <string name="description_confirmPin">Sẽ KHÔNG có nút Khôi phục mã PIN. Hãy chắc chắn rằng bạn nhớ nó.</string>
+    <string name="tip_confirmPin">Vì bạn sẽ trở thành ngân hàng của chính mình, bạn kiểm soát toàn bộ ví nên chúng tôi không thể trợ giúp nếu bạn mất mã PIN.</string>
+
+</resources>

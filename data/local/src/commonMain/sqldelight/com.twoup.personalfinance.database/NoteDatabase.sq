@@ -1,0 +1,32 @@
+CREATE TABLE NoteDatabase (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     title TEXT NOT NULL,
+     description TEXT NOT NULL,
+     created INTEGER NOT NULL
+);
+
+getAllNote:
+SELECT *
+FROM NoteDatabase;
+
+getNoteById:
+SELECT *
+FROM NoteDatabase
+WHERE id = ?;
+
+updateNote:
+UPDATE NoteDatabase
+SET title = ?, description = ?, created =?
+WHERE id = ?;
+
+insertNote:
+INSERT INTO NoteDatabase(title,description, created)
+VALUES (?,?,?);
+
+deleteNoteById:
+DELETE FROM NoteDatabase
+WHERE id =?;
+
+deleteAllNote:
+DELETE FROM NoteDatabase;
+

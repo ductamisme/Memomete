@@ -7,21 +7,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 
-class SearchViewModel() : ScreenModel, KoinComponent {
+class SearchViewModel : ScreenModel, KoinComponent {
 
     private val useCaseSearchNote: UseCaseSearchNote by inject()
     private val _searchResults = useCaseSearchNote.searchResults
     private val _searchResultsFlow = MutableStateFlow(_searchResults)
 
-    private val _selectedComic = MutableStateFlow<NoteEntity?>(null)
-    val selectedComic: StateFlow<NoteEntity?> = _selectedComic.asStateFlow()
+    private val _selectedNote = MutableStateFlow<NoteEntity?>(null)
+    val selectedNote: StateFlow<NoteEntity?> = _selectedNote.asStateFlow()
 
     val searchResults: MutableStateFlow<StateFlow<List<NoteEntity>>> = _searchResultsFlow
 
     fun searchComic(query: String) {
-        useCaseSearchNote.searchComic(query)
+        useCaseSearchNote.searchNote(query)
     }
 }

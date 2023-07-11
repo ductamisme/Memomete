@@ -1,5 +1,7 @@
 package com.twoup.personalfinance.features.note.ui.Note.setting
 
+import AboutText
+import HelpText
 import PrivacySetting
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -52,7 +54,6 @@ import io.github.aakira.napier.Napier
 import org.koin.core.component.getScopeName
 
 class SettingsScreen : Screen {
-
     @Composable
     override fun Content() {
         val viewModel = rememberScreenModel { ThemeViewModel() }
@@ -62,7 +63,7 @@ class SettingsScreen : Screen {
             topBar = {
                 TopBarContent()
             },
-            content = { SettingsView(viewModel, darkTheme) }
+            content = { SettingsView(viewModel, darkTheme)}
         )
     }
 
@@ -119,6 +120,16 @@ class SettingsScreen : Screen {
                     }
                 )
             }
+            item {
+                SettingOption(
+                    label = "About & Help",
+                    control = {
+                        AboutText()
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        HelpText()
+                    }
+                )
+            }
 
             item {
                 SettingOption(
@@ -149,7 +160,7 @@ class SettingsScreen : Screen {
                 Icon(
                     imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                     contentDescription = "Expand/Collapse",
-                    tint = Color.Gray
+                    tint = MaterialTheme.colors.primaryVariant
                 )
             }
             if (expanded) {
@@ -172,7 +183,7 @@ class SettingsScreen : Screen {
                     }
                 }
             }
-            Divider(modifier = Modifier.padding(vertical = 8.dp), color = Color.LightGray)
+            Divider(modifier = Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primaryVariant)
         }
     }
 }
@@ -186,7 +197,7 @@ private fun TopBarContent() {
                 "Settings",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = MaterialTheme.colors.onPrimary
             )
         },
         navigationIcon = {
@@ -199,20 +210,8 @@ private fun TopBarContent() {
                 )
             }
         },
-        backgroundColor = MaterialTheme.colors.surface,
+        backgroundColor = MaterialTheme.colors.primary,
         elevation = AppBarDefaults.TopAppBarElevation
     )
 }
 
-@Composable
-fun ThemeToggleButton(darkTheme: MutableState<Boolean>) {
-    Button(
-        onClick = { darkTheme.value = !darkTheme.value },
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(
-            text = if (darkTheme.value) "Switch to Light Theme" else "Switch to Dark Theme",
-            style = MaterialTheme.typography.button
-        )
-    }
-}

@@ -10,6 +10,8 @@ import com.twoup.personalfinance.local.note.NoteLocalDataSource
 import com.twoup.personalfinance.local.note.usecase.UseCaseInsertNote
 import com.twoup.personalfinance.model.information.local.InformationEntity
 import com.twoup.personalfinance.model.note.local.NoteEntity
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -18,6 +20,8 @@ class AvatarViewModel : ScreenModel, KoinComponent {
     private val useCaseUpdateInformation: UseCaseUpdateInformation by inject()
     private val useCaseGetAllInformation: UseCaseGetAllInformation by inject()
     private val useCaseDeleteAllInformation: UseCaseDeleteAllInformation by inject()
+
+    val notes: StateFlow<List<InformationEntity>> get() = useCaseGetAllInformation.informationState.asStateFlow()
 
     fun getAllInformation(){
         useCaseGetAllInformation.getAllNote()

@@ -11,5 +11,7 @@ fun NoteDatabase.toNote(): NoteEntity{
         title = title,
         description = description,
         created = Instant.fromEpochMilliseconds(created).toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()),
+        favourite = favorite,
+        trash = trash
     )
 }

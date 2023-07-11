@@ -14,9 +14,7 @@ class UseCaseInsertNote(private val dataSource: NoteLocalDataSource) {
     fun insertNote(note: NoteEntity) {
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
-                dataSource.insertNote(
-                    NoteEntity(note.id, note.title, note.description, note.created)
-                )
+                dataSource.insertNote(note)
             }
         }
     }

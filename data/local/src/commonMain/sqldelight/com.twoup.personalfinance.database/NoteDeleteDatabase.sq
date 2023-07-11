@@ -1,0 +1,26 @@
+CREATE TABLE NoteDeleteDatabase (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     title TEXT NOT NULL,
+     description TEXT NOT NULL,
+     created INTEGER NOT NULL
+);
+
+getAllNoteDelete:
+SELECT *
+FROM NoteDeleteDatabase;
+
+inserNoteDelete:
+INSERT INTO NoteDeleteDatabase(title,description, created)
+VALUES (?,?,?);
+
+updateNoteDelete:
+UPDATE NoteDeleteDatabase
+SET title =?, description =?, created =?
+WHERE id = ?;
+
+deleteNoteDeleteById:
+DELETE FROM NoteDeleteDatabase
+WHERE id =?;
+
+deleteAllNoteDelete:
+DELETE FROM NoteDeleteDatabase;

@@ -2,7 +2,9 @@ CREATE TABLE NoteDatabase (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
      title TEXT NOT NULL,
      description TEXT NOT NULL,
-     created INTEGER NOT NULL
+     created INTEGER NOT NULL,
+     favorite INTEGER DEFAULT 0 CHECK (favorite IN (0, 1)),
+     trash INTEGER DEFAULT 0 CHECK (trash IN (0, 1))
 );
 
 getAllNote:
@@ -16,7 +18,7 @@ WHERE id = ?;
 
 updateNote:
 UPDATE NoteDatabase
-SET title = ?, description = ?, created =?
+SET title = ?, description = ?, created =?, favorite =?, trash =?
 WHERE id = ?;
 
 insertNote:
@@ -26,6 +28,14 @@ VALUES (?,?,?);
 deleteNoteById:
 DELETE FROM NoteDatabase
 WHERE id =?;
+
+deleteAllNoteDeleted:
+DELETE FROM NoteDatabase
+WHERE trash = 1;
+
+deleteNoteDeleteById:
+DELETE FROM NoteDatabase
+WHERE id = ? AND trash = 1;
 
 deleteAllNote:
 DELETE FROM NoteDatabase;

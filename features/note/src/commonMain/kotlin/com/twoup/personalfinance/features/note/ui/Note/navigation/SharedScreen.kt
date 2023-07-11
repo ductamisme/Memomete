@@ -9,7 +9,9 @@ sealed class SharedScreen : ScreenProvider{
     object AvatarScreen : SharedScreen()
     object SearchNote : SharedScreen()
     object SettingScreen: SharedScreen()
-    object NoteAppScreen: SharedScreen()
+    object NoteScreenFavorite: SharedScreen()
+    object NoteTrashScreen: SharedScreen()
+    data class EditNoteTrashScreen(val note : NoteEntity): SharedScreen()
     data class EditNoteScreen(val note : NoteEntity): SharedScreen()
 
 }

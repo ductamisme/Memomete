@@ -34,6 +34,14 @@ class NoteLocalDataSourceImpl(noteDatabaseWrapper: NoteDatabaseWrapper) : NoteLo
         dbQuery.deleteAllNote()
     }
 
+    override suspend fun deleteNoteDeletedById(id: Long) {
+        dbQuery.deleteNoteDeleteById(id)
+    }
+
+    override suspend fun deleteAllNoteDeleted() {
+        dbQuery.deleteAllNoteDeleted()
+    }
+
     override suspend fun updateNote(note: NoteEntity) {
         dbQuery.transaction {
             note.id?.let {
@@ -41,7 +49,9 @@ class NoteLocalDataSourceImpl(noteDatabaseWrapper: NoteDatabaseWrapper) : NoteLo
                     title = note.title,
                     description = note.description,
                     created = DateTimeUtil.toEpochMillis(note.created),
-                    id = it
+                    id = it,
+                    favorite = note.favourite,
+                    trash = note.trash
                 )
             }
         }

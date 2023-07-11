@@ -1,7 +1,7 @@
 package com.twoup.personalfinance.local.note.usecase
 
 import androidx.compose.runtime.mutableStateListOf
-import com.twoup.personalfinance.local.date.SearchNote
+import com.twoup.personalfinance.local.date.SearchNoteFromOldest
 import com.twoup.personalfinance.local.note.NoteLocalDataSource
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -18,7 +18,7 @@ class UseCaseSearchNote(private val dataSource: NoteLocalDataSource) {
     val searchResults: StateFlow<List<NoteEntity>> get() = _searchResultsFlow
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun searchComic(query: String) {
+    fun searchNote(query: String) {
         if (query.isBlank()) {
             _searchResults.clear()
             return
@@ -26,7 +26,8 @@ class UseCaseSearchNote(private val dataSource: NoteLocalDataSource) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val allNotes = dataSource.getAllNote()
-                val filteredNotes = SearchNote().execute(allNotes, query)
+                val notes = allNotes.filter { it.trash == 0L }
+                val filteredNotes = SearchNoteFromOldest().execute(notes, query)
                 _searchResults.clear()
                 _searchResults.addAll(filteredNotes)
                 _searchResultsFlow.value = _searchResults.toList()

@@ -26,11 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,8 +34,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.AppBarDefaults
-import androidx.compose.material.Button
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
@@ -55,12 +51,13 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -75,6 +72,7 @@ import com.twoup.personalfinance.features.people.ui.icons.Language
 import com.twoup.personalfinance.features.people.ui.icons.Schedule
 import com.twoup.personalfinance.model.information.local.InformationEntity
 import com.twoup.personalfinance.model.note.local.NoteEntity
+import io.github.aakira.napier.Napier
 
 enum class AvatarOption(val icon: ImageVector) {
     PERSON(Icons.Default.Person),
@@ -97,12 +95,14 @@ enum class AvatarOption(val icon: ImageVector) {
 class AvatarScreen : Screen {
     @Composable
     override fun Content() {
-//        val viewModel = rememberScreenModel { AvatarViewModel() }
+        val viewModel = rememberScreenModel { AvatarViewModel() }
         val uiState = remember { AvatarUiState() }
         val navigator = LocalNavigator.currentOrThrow
         var enteredName by rememberSaveable { mutableStateOf("") }
         var enteredEmail by rememberSaveable { mutableStateOf("") }
         var selectedAvatar by rememberSaveable { mutableStateOf(AvatarOption.PERSON) }
+//        val informationState by viewModel.notes.collectAsState(emptyList())
+//        val avatarInformation = informationState.component1()
 
         val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
             cursorColor = Color.Black,
@@ -110,13 +110,31 @@ class AvatarScreen : Screen {
             focusedLabelColor = Color.Black,
         )
 
+        LaunchedEffect(navigator) {
+            viewModel.getAllInformation()
+        }
+
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Avatar", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.Black) },
+                    title = {
+                        Text(
+                            "Avatar",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = colors.onPrimary
+                        )
+                    },
                     navigationIcon = {
                         IconButton(
-                            onClick = { navigator.pop() }
+                            onClick = {
+                                navigator.pop()
+                                val note = InformationEntity(
+                                    uiState.name,
+                                    uiState.email
+                                )
+                                viewModel.insertInformation(note)
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
@@ -124,7 +142,7 @@ class AvatarScreen : Screen {
                             )
                         }
                     },
-                    backgroundColor = MaterialTheme.colors.surface,
+                    backgroundColor = colors.primary,
                     elevation = AppBarDefaults.TopAppBarElevation
                 )
             }
@@ -140,7 +158,6 @@ class AvatarScreen : Screen {
                     modifier = Modifier
                         .size(120.dp)
                         .clip(CircleShape)
-//                            .alpha(animatedAlpha)
                         .animateContentSize(
                             animationSpec = spring(dampingRatio = 0.6f)
                         ),
@@ -149,7 +166,7 @@ class AvatarScreen : Screen {
                     Icon(
                         imageVector = selectedAvatar.icon,
                         contentDescription = "User Avatar",
-                        tint = Color.LightGray,
+                        tint = colors.primary,
                         modifier = Modifier
                             .size(120.dp)
                             .clip(CircleShape)
@@ -165,8 +182,10 @@ class AvatarScreen : Screen {
                     Column {
                         OutlinedTextField(
                             value = uiState.name,
-                            onValueChange = { uiState.updateName(it) },
-                            label = { Text("Name", style = TextStyle(color = Color.Black)) },
+                            onValueChange = {
+                                saveInformation(uiState, viewModel)
+                            },
+                            label = { Text("Name", style = TextStyle(color = colors.onPrimary)) },
                             colors = textFieldColors,
                             modifier = Modifier.width(330.dp)
                         )
@@ -175,26 +194,32 @@ class AvatarScreen : Screen {
 
                         OutlinedTextField(
                             value = uiState.email,
-                            onValueChange = {uiState.updateEmail(it) },
-                            label = { Text("Email", style = TextStyle(color = Color.Black)) },
+                            onValueChange = {
+                                saveInformation(uiState, viewModel)
+                            },
+                            label = { Text("Email", style = TextStyle(color = colors.onPrimary)) },
                             colors = textFieldColors,
                             modifier = Modifier.width(330.dp)
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    onClick = {
-                        val information = InformationEntity(
-                            uiState.name,
-                            uiState.email
-                        )
-//                        viewModel.insertInformation(information)
-                    },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                ) {
-                    Text("Add Information")
-                }
+
+//                if(informationState.isNotEmpty()){
+//                    Text(
+//                        text = avatarInformation.name,
+//                        fontSize = 12.sp,
+//                        fontStyle = FontStyle.Normal
+//                    )
+//                    Text(
+//                        text = avatarInformation.email,
+//                        fontSize = 12.sp,
+//                        fontStyle = FontStyle.Normal
+//                    )
+//                }
+
+
+
                 Spacer(modifier = Modifier.height(48.dp))
 
                 LazyColumn(
@@ -239,7 +264,7 @@ fun AvatarOption(
             .size(64.dp)
             .clickable(onClick = onClick)
             .background(
-                color = if (selected) Color.Gray else Color.White,
+                color = if (selected) colors.primary else colors.surface.copy(alpha = 0.6f),
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center
@@ -247,8 +272,16 @@ fun AvatarOption(
         Icon(
             imageVector = avatar,
             contentDescription = "Avatar Option",
-            tint = Color.LightGray,
+            tint = colors.primaryVariant,
             modifier = Modifier.size(48.dp)
         )
     }
+}
+
+private fun saveInformation(uiState: AvatarUiState, viewModel: AvatarViewModel) {
+    val note = InformationEntity(
+        uiState.name,
+        uiState.email
+    )
+    viewModel.updateInformation(note)
 }

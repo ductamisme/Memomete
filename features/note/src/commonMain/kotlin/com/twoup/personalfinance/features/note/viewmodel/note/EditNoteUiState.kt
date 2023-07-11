@@ -11,7 +11,8 @@ class EditNoteUiState(note : NoteEntity) {
     var title by mutableStateOf(note.title)
     var description by mutableStateOf(note.description)
     var created by mutableStateOf(note.created)
-
+    var favourite by mutableStateOf(note.favourite ) // Use default value if favourite is null
+    var trash by mutableStateOf(note.trash )
     fun updateId(newId: Long) {
         id = newId
     }

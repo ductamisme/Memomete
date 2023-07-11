@@ -6,13 +6,14 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class UseCaseGetAllNote(private val dataSource: NoteLocalDataSource) {
 
     val noteState : MutableStateFlow<List<NoteEntity>> = MutableStateFlow(listOf())
-
+    private var noteStateDeleted = noteState.value.filter { it.trash == 0L}
     @OptIn(DelicateCoroutinesApi::class)
     fun getAllNote(){
         GlobalScope.launch{
@@ -20,6 +21,16 @@ class UseCaseGetAllNote(private val dataSource: NoteLocalDataSource) {
                 dataSource.getAllNote()
             }
             noteState.value = note
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun getAllNoteNotContainTrash(){
+        GlobalScope.launch{
+            val note = withContext(Dispatchers.Main){
+                dataSource.getAllNote()
+            }
+            noteStateDeleted = note
         }
     }
 }

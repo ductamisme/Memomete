@@ -11,9 +11,7 @@ class AvatarUiState(
     email: String = "",
 ) {
     var name by mutableStateOf(name)
-        private set
     var email by mutableStateOf(email)
-        private set
 
     fun updateName(newName: String) {
         name = newName

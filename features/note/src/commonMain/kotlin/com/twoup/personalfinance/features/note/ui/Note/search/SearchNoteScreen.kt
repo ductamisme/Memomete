@@ -16,7 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -50,9 +50,9 @@ class SearchNoteScreen : Screen {
         val searchQuery = remember { mutableStateOf("") }
         val searchResults by viewModel.searchResults.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
-        val selectedNote by viewModel.selectedComic.collectAsState(null)
+        val selectedNote by viewModel.selectedNote.collectAsState(null)
 
-        Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
+        Column(modifier = Modifier.fillMaxSize().background(colors.surface)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -61,7 +61,7 @@ class SearchNoteScreen : Screen {
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp)
-                        .background(Color.White, RoundedCornerShape(16.dp))
+                        .background(color = colors.surface, RoundedCornerShape(16.dp))
                 ) {
                     TextField(
                         value = searchQuery.value,
@@ -69,7 +69,7 @@ class SearchNoteScreen : Screen {
                             searchQuery.value = query
                             viewModel.searchComic(query)
                         },
-                        textStyle = TextStyle(color = Color.Black),
+                        textStyle = TextStyle(color = colors.onPrimary),
                         placeholder = {
                             Text(text = "Search")
                         },
@@ -79,7 +79,6 @@ class SearchNoteScreen : Screen {
                         ),
                         keyboardActions = KeyboardActions(
                             onSearch = {
-//                        onSearchAction()
                             }
                         ),
                         leadingIcon = {
@@ -91,7 +90,7 @@ class SearchNoteScreen : Screen {
                                 Icon(
                                     Icons.Default.ArrowBack,
                                     contentDescription = "Back",
-                                    tint = Color.Gray
+                                    tint = colors.primaryVariant
                                 )
                             }
                         },
@@ -105,15 +104,15 @@ class SearchNoteScreen : Screen {
                                     Icon(
                                         Icons.Default.Clear,
                                         contentDescription = "Clear Icon",
-                                        tint = Color.Gray
+                                        tint = colors.primaryVariant
                                     )
                                 }
                             }
                         },
                         singleLine = true,
                         colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color.White,
-                            cursorColor = Color.Black,
+                            backgroundColor = colors.surface,
+                            cursorColor = colors.onPrimary,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent
                         ),
@@ -133,10 +132,11 @@ class SearchNoteScreen : Screen {
                                     note.title,
                                     note.description,
                                     DateTimeUtil.now(),
+                                    note.favourite,
+                                    note.trash
                                 )
                             )
                         )
-                        // Display each search result item
                         ItemNotesSearch(
                             note,
                         ) { navigator.push(editScreen) }

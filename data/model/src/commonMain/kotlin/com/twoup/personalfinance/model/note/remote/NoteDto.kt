@@ -10,11 +10,12 @@ import kotlinx.serialization.Serializable
 data class NoteDto(
     val id: Long?,
     val title: String,
-    val description: String,
+    var description: String,
     val created: LocalDateTime,
-
-    ) : Dto {
+    var favourite: Long?,
+    var trash: Long?
+) : Dto {
     override fun mapToDomainModel(): NoteModel {
-        return NoteModel(id, title, description, created)
+        return NoteModel(id, title, description, created, favourite, trash)
     }
 }

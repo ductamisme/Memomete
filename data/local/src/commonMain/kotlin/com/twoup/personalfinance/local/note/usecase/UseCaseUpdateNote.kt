@@ -11,10 +11,19 @@ import kotlinx.coroutines.withContext
 class UseCaseUpdateNote(private val dataSource: NoteLocalDataSource) {
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun updateNote(note: NoteEntity,loadNote: Unit) {
+    fun updateNote(note: NoteEntity, loadNote: Unit) {
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
-                dataSource.updateNote(NoteEntity(note.id, note.title, note.description, note.created))
+                dataSource.updateNote(
+                    NoteEntity(
+                        note.id,
+                        note.title,
+                        note.description,
+                        note.created,
+                        note.favourite,
+                        note.trash
+                    )
+                )
             }
             loadNote
         }

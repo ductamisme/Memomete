@@ -13,7 +13,7 @@ class EditNoteViewModel() : ScreenModel, KoinComponent {
     private val useCaseGetAllNote : UseCaseGetAllNote by inject()
     private val useCaseDeleteNoteById: UseCaseDeleteNoteById by inject()
 
-    fun updateComic(note : NoteEntity) {
+    fun updateNote(note : NoteEntity) {
         useCaseUpdateNote.updateNote(note, useCaseGetAllNote.getAllNote())
     }
 

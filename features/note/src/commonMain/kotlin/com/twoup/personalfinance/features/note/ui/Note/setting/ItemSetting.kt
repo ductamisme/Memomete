@@ -1,34 +1,12 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
 
 @Composable
-fun PrivacySetting(){
+fun PrivacySetting() {
     Text(
         buildAnnotatedString {
             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -68,6 +46,61 @@ fun PrivacySetting(){
             }
         }
     )
+}
 
+@Composable
+fun AboutText() {
+    Text(
+        buildAnnotatedString {
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                append("Memomates - Your Personal Reminder App\n\n")
+            }
+            append("Version: 1.0.0\n")
+            append("Developer: XYZ Corporation\n\n")
 
+            append("Memomates is a simple and intuitive app designed to help you stay organized and never miss an important task or event. With Memomates, you can easily create reminders, set notification preferences, and manage your tasks effortlessly.\n\n")
+
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                append("Key Features:\n")
+            }
+            append("- Create and manage reminders with customizable settings\n")
+            append("- Set notification preferences for timely reminders\n")
+            append("- Choose from various themes to personalize your app experience\n")
+            append("- Backup and restore your data for peace of mind\n")
+            append("- Privacy-focused design to protect your personal information\n\n")
+
+            append("Thank you for choosing Memomates. We strive to continuously improve the app and provide you with the best user experience. If you have any feedback or suggestions, please don't hesitate to reach out to us.\n\n")
+
+            append("Stay organized and never miss a beat with Memomates!")
+        }
+    )
+}
+
+@Composable
+fun HelpText() {
+    Text(
+        buildAnnotatedString {
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                append("Frequently Asked Questions (FAQs):\n\n")
+            }
+            append("1. How do I create a new reminder?\n")
+            append("   To create a new reminder, simply open the app and click on the \"+\" button or the \"Add Reminder\" option. Enter the necessary details such as title, date, time, and any additional notes. Save the reminder, and it will be added to your list.\n\n")
+
+            append("2. How can I edit or delete a reminder?\n")
+            append("   To edit or delete a reminder, navigate to the reminder list or calendar view and locate the specific reminder. Tap on the reminder to view its details. From there, you can choose to edit the reminder or delete it permanently.\n\n")
+
+            append("3. How do I set notification preferences?\n")
+            append("   You can customize your notification preferences by going to the Settings screen. Look for the \"Notification Settings\" option and adjust the settings according to your preferences. You can enable or disable notifications, set the notification time, and choose the notification sound.\n\n")
+
+            append("4. Can I back up my reminder data?\n")
+            append("   Yes, you can back up your reminder data to ensure you don't lose important information. In the Settings screen, find the \"Backup and Restore\" option. Choose the backup method (cloud storage or local backup) and follow the instructions to create a backup of your reminders.\n\n")
+
+            append("5. How can I contact support?\n")
+            append("   If you have any questions, feedback, or need assistance, you can reach our support team by emailing support@memomates.com. We are here to help you with any issues or inquiries you may have.\n\n")
+
+            append("For additional help or information, please visit our website at www.memomates.com or refer to the in-app documentation.\n\n")
+
+            append("Thank you for using Memomates! We appreciate your support.")
+        }
+    )
 }

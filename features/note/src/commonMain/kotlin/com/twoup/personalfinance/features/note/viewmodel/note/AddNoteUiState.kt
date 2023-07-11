@@ -1,3 +1,5 @@
+package com.twoup.personalfinance.features.note.viewmodel.note
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,31 +11,16 @@ class AddNoteUiState(
     title: String = "",
     description: String = "",
     created: LocalDateTime = DateTimeUtil.now(),
+    favourite: Long = 0L,
+    trash : Long = 0L
 ) {
     var id by mutableStateOf(id)
         private set
     var title by mutableStateOf(title)
-        private set
     var description by mutableStateOf(description)
-        private set
     var created by mutableStateOf(created)
         private set
-    var editMode by mutableStateOf(false)
-        private set
+    var favourite by mutableStateOf(favourite)
+    var trash by mutableStateOf(trash)
 
-    fun toggleEditMode() {
-        editMode = !editMode
-    }
-
-    fun updateTitle(newTitle: String) {
-        title = newTitle
-    }
-
-    fun updateDescription(newDescription: String) {
-        description = newDescription
-    }
-
-    fun updateId(newId: Long) {
-        id = newId
-    }
 }

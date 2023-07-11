@@ -2,11 +2,14 @@ package com.twoup.personalfinance.features.note.di
 
 import cafe.adriel.voyager.core.registry.screenModule
 import com.twoup.personalfinance.features.note.ui.Note.AddNoteScreen
+import com.twoup.personalfinance.features.note.ui.Note.EditNoteDeleteScreen
 import com.twoup.personalfinance.features.note.ui.Note.EditNoteScreen
-import com.twoup.personalfinance.features.note.ui.Note.NoteScreen
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.yourNote.NoteScreen
 import com.twoup.personalfinance.features.note.ui.Note.setting.SettingsScreen
 import com.twoup.personalfinance.features.note.ui.Note.information.AvatarScreen
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.favoriteNote.NoteScreenFavorite
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.trashNote.NoteScreenTrash
 import com.twoup.personalfinance.features.note.ui.Note.search.SearchNoteScreen
 import com.twoup.personalfinance.features.note.viewmodel.note.AvatarViewModel
 import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
@@ -38,7 +41,13 @@ val noteModule = screenModule {
     register<SharedScreen.SearchNote> {
         SearchNoteScreen()
     }
-//    register<SharedScreen.NoteAppScreen> {
-//        NoteAppScreen()
-//    }
+    register<SharedScreen.NoteScreenFavorite> {
+        NoteScreenFavorite()
+    }
+    register<SharedScreen.NoteTrashScreen> {
+        NoteScreenTrash()
+    }
+    register<SharedScreen.EditNoteTrashScreen> { provider ->
+        EditNoteDeleteScreen(note = provider.note)
+    }
 }

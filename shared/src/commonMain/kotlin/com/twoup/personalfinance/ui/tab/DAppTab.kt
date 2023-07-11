@@ -7,7 +7,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.twoup.personalfinance.features.note.ui.Note.NoteScreen
 import com.twoup.personalfinance.features.note.ui.Note.setting.SettingsScreen
 
 internal object DAppTab: DestinationTab {

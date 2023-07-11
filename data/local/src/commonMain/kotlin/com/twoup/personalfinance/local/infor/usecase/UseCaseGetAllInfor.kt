@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class UseCaseGetAllInformation(private val dataSource: InformationLocalDataSource) {
-    private val informationState: MutableStateFlow<List<InformationEntity>> = MutableStateFlow(listOf())
+    val informationState: MutableStateFlow<List<InformationEntity>> = MutableStateFlow(listOf())
 
     @OptIn(DelicateCoroutinesApi::class)
     fun getAllNote() {

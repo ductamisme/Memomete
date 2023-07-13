@@ -25,8 +25,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
-import com.twoup.personalfinance.features.note.viewmodel.note.EditNoteUiState
-import com.twoup.personalfinance.features.note.viewmodel.note.EditNoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.EditNoteUiState
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.EditNoteViewModel
 import com.twoup.personalfinance.model.note.local.NoteEntity
 
 class EditNoteScreen(private val note: NoteEntity) : Screen {

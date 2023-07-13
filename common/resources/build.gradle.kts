@@ -29,6 +29,9 @@ kotlin {
 
                 api(libs.moko.compose.resource)
 
+                //new
+                implementation(compose.material3)
+
             }
         }
         val commonTest by getting {

@@ -11,8 +11,8 @@ import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.favoriteNote.NoteScreenFavorite
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.trashNote.NoteScreenTrash
 import com.twoup.personalfinance.features.note.ui.Note.search.SearchNoteScreen
-import com.twoup.personalfinance.features.note.viewmodel.note.AvatarViewModel
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.information.AvatarViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import org.koin.dsl.module
 
 val featureNoteModule = module {

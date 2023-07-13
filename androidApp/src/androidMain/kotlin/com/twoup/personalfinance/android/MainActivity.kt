@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
         setContent {
             MainView(viewModel = applicationViewModel)
-
         }
     }
 }

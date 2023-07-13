@@ -17,7 +17,7 @@ class UseCaseGetAllNote(private val dataSource: NoteLocalDataSource) {
     @OptIn(DelicateCoroutinesApi::class)
     fun getAllNote(){
         GlobalScope.launch{
-            val note = withContext(Dispatchers.Main){
+            val note = withContext(Dispatchers.Default){
                 dataSource.getAllNote()
             }
             noteState.value = note

@@ -1,6 +1,6 @@
 package com.twoup.personalfinance.features.note.ui.Note
 
-import com.twoup.personalfinance.features.note.viewmodel.note.AddNoteUiState
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AddNoteUiState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +24,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
-import com.twoup.personalfinance.features.note.viewmodel.note.AddNoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AddNoteViewModel
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import io.github.aakira.napier.Napier
 
@@ -127,7 +127,7 @@ class AddNoteScreen : Screen {
         }
     }
 }
-//private fun saveNoteEdit(uiState: com.twoup.personalfinance.features.note.viewmodel.note.AddNoteUiState, viewModel: EditNoteViewModel) {
+//private fun saveNoteEdit(uiState: com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AddNoteUiState, viewModel: EditNoteViewModel) {
 //    val note = NoteEntity(
 //        uiState.id,
 //        uiState.title,

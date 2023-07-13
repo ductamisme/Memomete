@@ -27,6 +27,7 @@ kotlin {
                 implementation(project(":domain"))
                 implementation(project(":data:model"))
                 implementation(project(":data:local"))
+                implementation(project(":extension"))
 
                 api(libs.uuid)
 
@@ -58,6 +59,7 @@ kotlin {
                 api(project(":common:resources"))
                 implementation(libs.napier)
 
+                api(libs.load.image)
 
             }
         }

@@ -39,7 +39,7 @@ import com.twoup.personalfinance.model.note.local.NoteEntity
 import androidx.compose.material.icons.filled.Refresh
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.dialog
 import com.twoup.personalfinance.features.note.viewmodel.note.EditNoteDeleteUiState
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import io.github.aakira.napier.Napier
 
 class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
@@ -159,7 +159,8 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                 },
                 onCancelClick = {
                     showDeleteConfirmation = false
-                }
+                },
+                titleDialog = "Are you sure restore this note?"
             )
         }
     }

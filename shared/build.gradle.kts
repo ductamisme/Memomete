@@ -77,7 +77,6 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
-
                 api(libs.kotlinx.coroutines.core)
                 api(libs.kotlinx.datetime)
                 api(libs.multiplatformSettings.core)
@@ -99,6 +98,10 @@ kotlin {
                 implementation(libs.voyager.bottomSheetNavigator)
 
                 api(libs.moko.compose.resource)
+
+                // new
+//                implementation(compose.material3)
+
             }
         }
         val androidMain by getting {
@@ -108,6 +111,10 @@ kotlin {
                 api(libs.appcompat)
                 api(libs.androidx.core.ktx)
                 implementation(libs.androidx.core.ktx)
+                //new
+//                implementation("com.squareup.sqldelight:android-driver:1.5.5")
+//                implementation("androidx.appcompat:appcompat:1.6.1")
+//                implementation("androidx.activity:activity-compose:1.7.2")
             }
         }
         val iosX64Main by getting
@@ -119,6 +126,9 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
+                //new
+//                implementation("com.squareup.sqldelight:native-driver:1.5.5")
+
             }
         }
 

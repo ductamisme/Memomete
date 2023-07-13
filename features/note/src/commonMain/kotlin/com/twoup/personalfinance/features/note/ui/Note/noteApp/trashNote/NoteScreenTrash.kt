@@ -18,7 +18,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.DrawerContent
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.TopBarHomePage
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import io.github.aakira.napier.Napier
 
 class NoteScreenTrash : Screen {

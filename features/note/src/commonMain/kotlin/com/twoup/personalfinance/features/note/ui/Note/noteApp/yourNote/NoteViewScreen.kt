@@ -1,7 +1,6 @@
 package com.twoup.personalfinance.features.note.ui.Note.noteApp.yourNote
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,14 +13,13 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.dialog
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import io.github.aakira.napier.Napier
 
@@ -152,7 +150,8 @@ fun NoteViews(
                 },
                 onCancelClick = {
                     showDeleteConfirmation = false
-                }
+                },
+                titleDialog = "Are you sure delete all the notes?"
             )
         }
 
@@ -168,7 +167,8 @@ fun NoteViews(
                 },
                 onCancelClick = {
                     showDeleteConfirmation = false
-                }
+                },
+                titleDialog = "Are you sure delete this note?"
             )
         }
     }

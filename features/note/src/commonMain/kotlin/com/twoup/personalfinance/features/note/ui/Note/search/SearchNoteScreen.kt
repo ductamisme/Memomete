@@ -39,7 +39,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
-import com.twoup.personalfinance.features.note.viewmodel.note.SearchViewModel
 import com.twoup.personalfinance.local.date.DateTimeUtil
 import com.twoup.personalfinance.model.note.local.NoteEntity
 

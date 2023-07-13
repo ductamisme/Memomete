@@ -8,11 +8,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +19,7 @@ import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.dialog
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import com.twoup.personalfinance.model.note.local.NoteEntity
 
 @Composable
@@ -150,7 +147,8 @@ fun NoteViewFavorite(
             },
             onCancelClick = {
                 showDeleteConfirmation = false
-            }
+            },
+            titleDialog = "Are you sure delete all the notes?"
         )
     }
 
@@ -165,7 +163,8 @@ fun NoteViewFavorite(
             },
             onCancelClick = {
                 showDeleteConfirmation = false
-            }
+            },
+            titleDialog = "Are you sure delete this note?"
         )
     }
 }

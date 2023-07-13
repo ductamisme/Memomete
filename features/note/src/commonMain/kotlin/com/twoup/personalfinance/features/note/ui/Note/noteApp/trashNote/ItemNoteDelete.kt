@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,13 +18,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.twoup.personalfinance.features.note.ui.Note.noteApp.dialog
-import com.twoup.personalfinance.features.note.ui.Note.saveNote
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import com.twoup.personalfinance.local.date.DateTimeUtil
 import com.twoup.personalfinance.model.note.local.NoteEntity
-import com.twoup.personalfinance.model.noteDelete.local.NoteDeleteEntity
-import io.github.aakira.napier.Napier
 
 @Composable
 fun ItemNoteTrash(

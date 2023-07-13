@@ -19,7 +19,7 @@ import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.dialog
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import io.github.aakira.napier.Napier
 
@@ -146,7 +146,8 @@ fun NoteViewTrash(
             },
             onCancelClick = {
                 showDeleteConfirmation = false
-            }
+            },
+            titleDialog = "Are you sure restore this note?"
         )
     }
 }

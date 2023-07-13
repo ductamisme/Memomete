@@ -20,20 +20,18 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.twoup.personalfinance.features.note.viewmodel.note.NoteViewModel
 
 @Composable
 fun dialog(
     showDeleteConfirmation: Boolean,
     onYesClick: () -> Unit,
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    titleDialog: String
 ) {
     AnimatedVisibility(
         visible = showDeleteConfirmation,
@@ -58,7 +56,7 @@ fun dialog(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Are you sure you want to delete?",
+                        text = titleDialog,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 16.dp)
@@ -71,7 +69,6 @@ fun dialog(
                         TextButton(
                             onClick = {
                                 onCancelClick()
-//                                showDeleteConfirmation.value = false
                             },
                             modifier = Modifier.padding(end = 8.dp)
                         ) {
@@ -81,7 +78,6 @@ fun dialog(
                         Button(
                             onClick = {
                                 onYesClick()
-//                                showDeleteConfirmation.value = false
                             }
                         ) {
                             Text("Yes")

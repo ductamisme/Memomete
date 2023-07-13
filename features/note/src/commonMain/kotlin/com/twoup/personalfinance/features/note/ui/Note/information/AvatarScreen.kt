@@ -12,11 +12,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,61 +33,43 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.twoup.personalfinance.features.note.viewmodel.note.AvatarUiState
-import com.twoup.personalfinance.features.note.viewmodel.note.AvatarViewModel
-import com.twoup.personalfinance.features.people.ui.icons.Description
-import com.twoup.personalfinance.features.people.ui.icons.Info
-import com.twoup.personalfinance.features.people.ui.icons.Language
-import com.twoup.personalfinance.features.people.ui.icons.Schedule
+import com.twoup.personalfinance.features.note.ui.ImageItem
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AvatarUiState
 import com.twoup.personalfinance.model.information.local.InformationEntity
-import com.twoup.personalfinance.model.note.local.NoteEntity
-import io.github.aakira.napier.Napier
 
-enum class AvatarOption(val icon: ImageVector) {
-    PERSON(Icons.Default.Person),
-    STAR(Icons.Default.Star),
-    SCHEDULE(Icons.Default.Schedule),
-    INFO(Icons.Default.Info),
-    LANGUAGE(Icons.Default.Language),
-    FACE(Icons.Default.Face),
-    FAVORITE(Icons.Default.Favorite),
-    EMAIL(Icons.Default.Email),
-    PHONE(Icons.Default.Phone),
-    HOME(Icons.Default.Home),
-    SEND(Icons.Default.Send),
-    WARNING(Icons.Default.Warning),
-    DESCRIPTION(Icons.Default.Description),
-    DELETE(Icons.Default.Delete),
-    LOCK(Icons.Default.Lock)
+enum class AvatarOption(val url: String) {
+    GOJO("https://ecdn.game4v.com/g4v-content/uploads/2022/09/25083529/Gojo-2-game4v-1664069728-55.jpg"),
+    NARUTO("https://images.wallpapersden.com/image/download/anime-naruto-hd-2023-ai_bW5mbGmUmZqaraWkpJRmbmdlrWZlbWU.jpg"),
+    DORAEMON("https://wallpapers.com/images/hd/doraemon-on-the-moon-4k-38b6ro1mslswm5i6.jpg"),
+    LUFFY("https://images8.alphacoders.com/788/788705.jpg"),
+    GOKU("https://wallpapercave.com/wp/wp9172976.jpg"),
+    NATSU("https://prodigits.co.uk/thumbs/wallpapers/p2ls/anime/39/aa95cb2912524236.jpg"),
+    MIDORIYA("https://c4.wallpaperflare.com/wallpaper/235/679/618/anime-my-hero-academia-izuku-midoriya-hd-wallpaper-preview.jpg"),
+    SAITAMA("https://tophinhanhdep.com/wp-content/uploads/2021/11/Funny-One-Punch-Man-Wallpapers.jpg"),
+    EREN("https://images5.alphacoders.com/114/1143212.jpg"),
+    TANJIRO("https://c4.wallpaperflare.com/wallpaper/373/676/41/kimetsu-no-yaiba-anime-anime-boys-tanjiro-kamado-kamado-tanjir%C5%8D-hd-wallpaper-preview.jpg"),
+    NORAGAMI("https://images3.alphacoders.com/608/608362.jpg"),
+    KOROSENSE("https://images2.alphacoders.com/688/688011.jpg"),
+    ASTA("https://a-static.besthdwallpaper.com/black-clover-asta-new-demon-form-wallpaper-3840x2160-53335_54.jpg"),
+    SHINRA("https://images.alphacoders.com/114/1143428.jpg"),
+    CONAN("https://haycafe.vn/wp-content/uploads/2021/11/hinh-anh-conan-dep-nhat-de-thuong-dang-yeu-800x450.jpg")
 }
 
 class AvatarScreen : Screen {
@@ -100,7 +80,7 @@ class AvatarScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         var enteredName by rememberSaveable { mutableStateOf("") }
         var enteredEmail by rememberSaveable { mutableStateOf("") }
-        var selectedAvatar by rememberSaveable { mutableStateOf(AvatarOption.PERSON) }
+        var selectedAvatar by rememberSaveable { mutableStateOf(AvatarOption.GOJO) }
 //        val informationState by viewModel.notes.collectAsState(emptyList())
 //        val avatarInformation = informationState.component1()
 
@@ -113,6 +93,8 @@ class AvatarScreen : Screen {
         LaunchedEffect(navigator) {
             viewModel.getAllInformation()
         }
+
+
 
         Scaffold(
             topBar = {
@@ -163,10 +145,8 @@ class AvatarScreen : Screen {
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = selectedAvatar.icon,
-                        contentDescription = "User Avatar",
-                        tint = colors.primary,
+                    ImageItem(
+                        url = selectedAvatar.url,
                         modifier = Modifier
                             .size(120.dp)
                             .clip(CircleShape)
@@ -183,7 +163,6 @@ class AvatarScreen : Screen {
                         OutlinedTextField(
                             value = uiState.name,
                             onValueChange = {
-                                saveInformation(uiState, viewModel)
                             },
                             label = { Text("Name", style = TextStyle(color = colors.onPrimary)) },
                             colors = textFieldColors,
@@ -195,7 +174,6 @@ class AvatarScreen : Screen {
                         OutlinedTextField(
                             value = uiState.email,
                             onValueChange = {
-                                saveInformation(uiState, viewModel)
                             },
                             label = { Text("Email", style = TextStyle(color = colors.onPrimary)) },
                             colors = textFieldColors,
@@ -204,21 +182,6 @@ class AvatarScreen : Screen {
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-
-//                if(informationState.isNotEmpty()){
-//                    Text(
-//                        text = avatarInformation.name,
-//                        fontSize = 12.sp,
-//                        fontStyle = FontStyle.Normal
-//                    )
-//                    Text(
-//                        text = avatarInformation.email,
-//                        fontSize = 12.sp,
-//                        fontStyle = FontStyle.Normal
-//                    )
-//                }
-
-
 
                 Spacer(modifier = Modifier.height(48.dp))
 
@@ -240,7 +203,7 @@ class AvatarScreen : Screen {
                         LazyRow(content = {
                             items(row) { avatar ->
                                 AvatarOption(
-                                    avatar = avatar.icon,
+                                    avatar = avatar.url,
                                     selected = avatar == selectedAvatar,
                                     onClick = { selectedAvatar = avatar }
                                 )
@@ -255,7 +218,7 @@ class AvatarScreen : Screen {
 
 @Composable
 fun AvatarOption(
-    avatar: ImageVector,
+    avatar: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
@@ -263,17 +226,17 @@ fun AvatarOption(
         modifier = Modifier
             .size(64.dp)
             .clickable(onClick = onClick)
-            .background(
-                color = if (selected) colors.primary else colors.surface.copy(alpha = 0.6f),
-                shape = CircleShape
-            ),
+            .padding(2.dp),
         contentAlignment = Alignment.Center
     ) {
-        Icon(
-            imageVector = avatar,
-            contentDescription = "Avatar Option",
-            tint = colors.primaryVariant,
-            modifier = Modifier.size(48.dp)
+        ImageItem(
+            url = avatar,
+            modifier = Modifier
+                .size(120.dp)
+                .clip(CircleShape)
+                .animateContentSize(
+                    animationSpec = spring(dampingRatio = 0.6f)
+                )
         )
     }
 }

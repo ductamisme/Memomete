@@ -12,7 +12,7 @@ sqldelight = "1.5.5"
 koin = "3.3.3"
 koinCompose = "3.4.2"
 datetime = "0.4.0"
-
+load_image = "1.4.0"
 #Android
 activityCompose = "1.6.1"
 androidXCoreKtx = "1.9.0"
@@ -116,6 +116,9 @@ voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voy
 
 #date
 datetime = {module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "dateTime"}
+
+#loadImage
+load_image = {module = "io.github.qdsfdhvh:image-loader", version.ref = "load_image"}
 
 [bundles]
 ktor-common = ["ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-client-serialization"]

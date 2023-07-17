@@ -15,8 +15,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -44,7 +45,7 @@ fun dialog(
                 .fillMaxWidth()
                 .wrapContentHeight(Alignment.Bottom)
                 .padding(16.dp)
-                .background(MaterialTheme.colors.primaryVariant)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -70,17 +71,18 @@ fun dialog(
                             onClick = {
                                 onCancelClick()
                             },
-                            modifier = Modifier.padding(end = 8.dp)
+                            modifier = Modifier.padding(end = 8.dp),
                         ) {
-                            Text("Cancel")
+                            Text("Cancel", color = MaterialTheme.colorScheme.primary)
                         }
 
                         Button(
                             onClick = {
                                 onYesClick()
-                            }
+                            },
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                         ) {
-                            Text("Yes")
+                            Text("Yes", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }

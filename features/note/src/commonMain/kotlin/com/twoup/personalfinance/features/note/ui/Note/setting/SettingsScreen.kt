@@ -24,7 +24,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
@@ -83,7 +83,7 @@ class SettingsScreen : Screen {
                         ) {
                             Text(
                                 text = if (darkTheme) "Switch to Light Theme" else "Switch to Dark Theme",
-                                style = MaterialTheme.typography.button
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
@@ -160,7 +160,7 @@ class SettingsScreen : Screen {
                 Icon(
                     imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                     contentDescription = "Expand/Collapse",
-                    tint = MaterialTheme.colors.primaryVariant
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
             if (expanded) {
@@ -183,7 +183,7 @@ class SettingsScreen : Screen {
                     }
                 }
             }
-            Divider(modifier = Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primaryVariant)
+            Divider(modifier = Modifier.padding(vertical = 8.dp), color = MaterialTheme.colorScheme.outline)
         }
     }
 }
@@ -197,7 +197,7 @@ private fun TopBarContent() {
                 "Settings",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -210,7 +210,7 @@ private fun TopBarContent() {
                 )
             }
         },
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = MaterialTheme.colorScheme.primary,
         elevation = AppBarDefaults.TopAppBarElevation
     )
 }

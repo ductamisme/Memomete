@@ -4,6 +4,7 @@ import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberDrawerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,7 +42,7 @@ class NoteScreenTrash : Screen {
         ModalDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(notes)
+                DrawerContent(viewModel)
             },
             content = {
                 Scaffold(
@@ -54,7 +55,7 @@ class NoteScreenTrash : Screen {
                             drawerState
                         )
                     },
-                    backgroundColor = Color.White
+                    backgroundColor = MaterialTheme.colorScheme.background
                 ) {
                     NoteViewTrash(
                         notes = notes, viewModel = viewModel,

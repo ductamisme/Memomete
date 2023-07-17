@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,8 +34,8 @@ fun ItemNotesSearch(
     Card(
         elevation = 4.dp,
         shape = MaterialTheme.shapes.medium,
-        backgroundColor = Color.White,
-        border = BorderStroke(1.dp, Color.LightGray),
+        backgroundColor = MaterialTheme.colorScheme.background,
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -53,7 +54,7 @@ fun ItemNotesSearch(
 fun NoteTitle(title: String) {
     Text(
         text = title,
-        style = MaterialTheme.typography.h6,
+        style = MaterialTheme.typography.titleMedium,
         fontStyle = FontStyle.Italic
     )
     Spacer(modifier = Modifier.height(8.dp))
@@ -63,7 +64,7 @@ fun NoteTitle(title: String) {
 fun NoteDescription(description: String) {
     Text(
         text = description,
-        style = MaterialTheme.typography.body1,
+        style = MaterialTheme.typography.labelSmall,
         modifier = Modifier.padding(bottom = 8.dp)
     )
     Spacer(modifier = Modifier.width(8.dp))

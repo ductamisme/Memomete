@@ -98,9 +98,8 @@ kotlin {
                 implementation(libs.voyager.bottomSheetNavigator)
 
                 api(libs.moko.compose.resource)
-
                 // new
-//                implementation(compose.material3)
+                implementation(compose.material3)
 
             }
         }
@@ -137,6 +136,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation(compose.desktop.common)
+
             }
         }
     }

@@ -6,6 +6,7 @@ struct ContentView: View {
 
 	var body: some View {
 		Text("HN vang con mua")
+        ComposeController()
 	}
 }
 

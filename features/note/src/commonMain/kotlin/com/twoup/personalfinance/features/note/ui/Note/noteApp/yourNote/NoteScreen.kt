@@ -1,16 +1,10 @@
 package com.twoup.personalfinance.features.note.ui.Note.noteApp.yourNote
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
@@ -19,10 +13,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.DrawerContent
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.TopBarHomePage
-import com.twoup.personalfinance.features.note.ui.Note.search.ItemNotesSearch
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
-import com.twoup.personalfinance.local.date.DateTimeUtil
-import com.twoup.personalfinance.model.note.local.NoteEntity
 import io.github.aakira.napier.Napier
 
 class NoteScreen : Screen {
@@ -47,7 +38,7 @@ class NoteScreen : Screen {
         ModalDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(notes)
+                DrawerContent(viewModel)
             },
             content = {
                 Scaffold(
@@ -60,16 +51,16 @@ class NoteScreen : Screen {
                             drawerState
                         )
                     },
-                    backgroundColor = Color.White,
+                    backgroundColor = MaterialTheme.colorScheme.background,
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = { navigator.push(addNoteScreen) },
-                            backgroundColor = MaterialTheme.colors.primary,
+                            backgroundColor = MaterialTheme.colorScheme.primary,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = "Add",
-                                tint = MaterialTheme.colors.onPrimary
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     },
@@ -87,31 +78,32 @@ class NoteScreen : Screen {
                             tag = "Test on searchResult.value",
                             message = searchResult.value.toString()
                         )
-                    } else {
-                        LazyColumn(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-                            items(searchResult.value) { note ->
-                                val editScreen = rememberScreen(
-                                    SharedScreen.EditNoteScreen(
-                                        selectedNote ?: NoteEntity(
-                                            note.id,
-                                            note.title,
-                                            note.description,
-                                            DateTimeUtil.now(),
-                                            note.favourite,
-                                            note.trash
-                                        )
-                                    )
-                                )
-                                ItemNotesSearch(
-                                    note,
-                                ) { navigator.push(editScreen) }
-                            }
-                            Napier.d(
-                                tag = "Test on searchResult.value",
-                                message = searchResult.value.toString()
-                            )
-                        }
                     }
+//                    else {
+//                        LazyColumn(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+//                            items(searchResult.value) { note ->
+//                                val editScreen = rememberScreen(
+//                                    SharedScreen.EditNoteScreen(
+//                                        selectedNote ?: NoteEntity(
+//                                            note.id,
+//                                            note.title,
+//                                            note.description,
+//                                            DateTimeUtil.now(),
+//                                            note.favourite,
+//                                            note.trash
+//                                        )
+//                                    )
+//                                )
+//                                ItemNotesSearch(
+//                                    note,
+//                                ) { navigator.push(editScreen) }
+//                            }
+//                            Napier.d(
+//                                tag = "Test on searchResult.value",
+//                                message = searchResult.value.toString()
+//                            )
+//                        }
+//                    }
                     Napier.d(tag = "Test on show up", message = showUp.toString())
                 }
             }

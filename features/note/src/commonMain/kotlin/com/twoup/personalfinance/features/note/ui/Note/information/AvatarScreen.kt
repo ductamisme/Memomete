@@ -33,7 +33,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
@@ -104,7 +104,7 @@ class AvatarScreen : Screen {
                             "Avatar",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color = colors.onPrimary
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     },
                     navigationIcon = {
@@ -124,7 +124,7 @@ class AvatarScreen : Screen {
                             )
                         }
                     },
-                    backgroundColor = colors.primary,
+                    backgroundColor = MaterialTheme.colorScheme.primary,
                     elevation = AppBarDefaults.TopAppBarElevation
                 )
             }
@@ -164,7 +164,7 @@ class AvatarScreen : Screen {
                             value = uiState.name,
                             onValueChange = {
                             },
-                            label = { Text("Name", style = TextStyle(color = colors.onPrimary)) },
+                            label = { Text("Name", style = TextStyle(color = MaterialTheme.colorScheme.primary)) },
                             colors = textFieldColors,
                             modifier = Modifier.width(330.dp)
                         )
@@ -175,7 +175,7 @@ class AvatarScreen : Screen {
                             value = uiState.email,
                             onValueChange = {
                             },
-                            label = { Text("Email", style = TextStyle(color = colors.onPrimary)) },
+                            label = { Text("Email", style = TextStyle(color = MaterialTheme.colorScheme.primary)) },
                             colors = textFieldColors,
                             modifier = Modifier.width(330.dp)
                         )
@@ -193,7 +193,7 @@ class AvatarScreen : Screen {
                     item {
                         Text(
                             text = "Select an Avatar",
-                            style = MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(bottom = 8.dp),
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp

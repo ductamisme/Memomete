@@ -67,6 +67,7 @@ class NoteViewModel : BaseViewModel(), ScreenModel, KoinComponent {
     }
     init {
         loadNotes()
+        loadNoteNoteContainTrash()
     }
 
     fun deleteNoteById(id: Long) {
@@ -100,7 +101,7 @@ class NoteViewModel : BaseViewModel(), ScreenModel, KoinComponent {
     }
 
     fun updateNote(note: NoteEntity) {
-        useCaseUpdateNote.updateNote(note, useCaseGetAllNote.getAllNote())
+        useCaseUpdateNote.updateNote(note, useCaseGetAllNote.getAllNoteNotContainTrash())
     }
 
     class Factory(private val dataSource: NoteLocalDataSource) {

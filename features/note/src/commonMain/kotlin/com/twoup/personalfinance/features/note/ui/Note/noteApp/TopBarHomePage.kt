@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -27,7 +28,7 @@ fun TopBarHomePage(
                 "Memomates",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         actions = {
@@ -50,6 +51,7 @@ fun TopBarHomePage(
             ) {
                 Icon(imageVector = Icons.Default.Menu, contentDescription = null)
             }
-        }
+        },
+        backgroundColor = MaterialTheme.colorScheme.primary
     )
 }

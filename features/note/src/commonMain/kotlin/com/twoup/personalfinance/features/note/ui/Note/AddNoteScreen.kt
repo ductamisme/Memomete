@@ -5,8 +5,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +40,7 @@ class AddNoteScreen : Screen {
     override fun Content() {
         AddScreen()
     }
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun AddScreen() {
         val viewModel = rememberScreenModel { AddNoteViewModel() }
@@ -51,7 +59,7 @@ class AddNoteScreen : Screen {
                             "Add Note",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onPrimary
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     },
                     navigationIcon = {
@@ -71,10 +79,11 @@ class AddNoteScreen : Screen {
                             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                         }
                     },
-                    backgroundColor = MaterialTheme.colors.primary,
+                    backcgroundColor = MaterialTheme.colorScheme.primary,
                     elevation = AppBarDefaults.TopAppBarElevation,
                 )
-            }
+            },
+            backgroundColor = MaterialTheme.colorScheme.background
         ) {
             Box(
                 modifier = Modifier
@@ -101,7 +110,7 @@ class AddNoteScreen : Screen {
                             fontSize = 24.sp,
                             fontStyle = FontStyle.Normal,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onPrimary
+                            color = MaterialTheme.colorScheme.onBackground
                         ),
                         singleLine = true
                     )
@@ -119,7 +128,7 @@ class AddNoteScreen : Screen {
                             .padding(16.dp),
                         textStyle = TextStyle(
                             fontSize = 16.sp,
-                            color = MaterialTheme.colors.onPrimary
+                            color = MaterialTheme.colorScheme.onBackground
                         ),
                     )
                 }

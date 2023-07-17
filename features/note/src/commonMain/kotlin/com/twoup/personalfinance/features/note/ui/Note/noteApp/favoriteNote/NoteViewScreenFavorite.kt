@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -34,6 +34,7 @@ fun NoteViewFavorite(
     val trashNotes = notes.filter { it.trash == 0L }
     val favoriteNotes = trashNotes.filter { it.favourite != null && it.favourite == 1L }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
+    var showDeleteAllConfirmation by remember { mutableStateOf(false) }
     var selectedNote: NoteEntity? by remember { mutableStateOf(null) }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -45,6 +46,8 @@ fun NoteViewFavorite(
             Text(
                 text = "Your Favorite",
                 fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.onBackground
+
             )
 
             if (!showUp) {
@@ -61,7 +64,7 @@ fun NoteViewFavorite(
                             Icon(
                                 Icons.Default.KeyboardArrowDown,
                                 contentDescription = "Drop down",
-                                tint = colors.primaryVariant,
+                                tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.size(30.dp)
                             )
                         }
@@ -72,7 +75,7 @@ fun NoteViewFavorite(
                             Icon(
                                 Icons.Default.KeyboardArrowUp,
                                 contentDescription = "Forward",
-                                tint = colors.primaryVariant,
+                                tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.size(30.dp)
                             )
                         }
@@ -86,15 +89,12 @@ fun NoteViewFavorite(
                 ) {
                     Button(
                         onClick = {
-                            favoriteNotes.map { note ->
-                                note.trash = if (note.trash == 0L) 1L else 0L
-                                viewModel.updateNote(note)
-                                viewModel.loadNotes()
-                            }
+                            showDeleteAllConfirmation = true
                         },
-                        enabled = showUp
+                        enabled = showUp,
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                     ) {
-                        Text("Clear all")
+                        Text("Clear all", color = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
             }
@@ -136,17 +136,22 @@ fun NoteViewFavorite(
 
     if (trashNotes.isNotEmpty()) {
         dialog(
-            showDeleteConfirmation = showDeleteConfirmation,
+            showDeleteConfirmation = showDeleteAllConfirmation,
             onYesClick = {
+                favoriteNotes.map { note ->
+                    note.trash = if (note.trash == 0L) 1L else 0L
+                    viewModel.updateNote(note)
+                    viewModel.loadNotes()
+                }
                 trashNotes.forEach { note ->
                     note.trash = 1L
                     viewModel.updateNote(note)
                 }
-                viewModel.loadNoteNoteContainTrash()
-                showDeleteConfirmation = false
+//                viewModel.loadNoteNoteContainTrash()
+                showDeleteAllConfirmation = false
             },
             onCancelClick = {
-                showDeleteConfirmation = false
+                showDeleteAllConfirmation = false
             },
             titleDialog = "Are you sure delete all the notes?"
         )
@@ -158,7 +163,7 @@ fun NoteViewFavorite(
             onYesClick = {
                 selectedNote?.trash = if (selectedNote?.trash == 0L) 1L else 0L
                 viewModel.updateNote(selectedNote!!)
-                viewModel.loadNoteNoteContainTrash()
+//                viewModel.loadNoteNoteContainTrash()
                 showDeleteConfirmation = false
             },
             onCancelClick = {

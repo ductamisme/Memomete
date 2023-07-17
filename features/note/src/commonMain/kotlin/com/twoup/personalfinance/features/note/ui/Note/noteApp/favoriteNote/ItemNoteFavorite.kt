@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Favorite
@@ -45,8 +46,8 @@ fun ItemNoteFavorite(
         Card(
             shape = RoundedCornerShape(8.dp),
             elevation = 4.dp,
-            backgroundColor = Color.White,
-            border = BorderStroke(1.dp, Color.LightGray),
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+//            border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.outline),
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .clickable(onClick = onNoteClick)
@@ -96,7 +97,7 @@ fun ItemNoteFavorite(
                         Icon(
                             imageVector = Icons.Default.Favorite,
                             contentDescription = null,
-                            tint = if (noteEntity.favourite == 1L) MaterialTheme.colors.error else MaterialTheme.colors.primaryVariant.copy(
+                            tint = if (noteEntity.favourite == 1L) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onError.copy(
                                 alpha = 0.6f
                             )
                         )
@@ -110,12 +111,13 @@ fun ItemNoteFavorite(
             fontSize = 18.sp,
             fontStyle = FontStyle.Italic,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onPrimaryContainer
+
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = formattedDate,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.outline,
         )
     }
 }

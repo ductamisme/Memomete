@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -48,7 +48,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                             "Edit Note",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color = colors.onPrimary
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     },
                     navigationIcon = {
@@ -58,11 +58,11 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = null,
-                                tint = colors.onPrimary
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     },
-                    backgroundColor = colors.primary,
+                    backgroundColor = MaterialTheme.colorScheme.primary,
                     elevation = AppBarDefaults.TopAppBarElevation,
                     actions = {
                         IconButton(onClick = {
@@ -72,12 +72,13 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                             Icon(
                                 imageVector = Icons.Default.Favorite,
                                 contentDescription = null,
-                                tint = if (uiState.favourite == 1L) colors.error else colors.primaryVariant.copy(alpha = 0.6f)
+                                tint = if (uiState.favourite == 1L) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onError.copy(alpha = 0.6f)
                             )
                         }
                     }
                 )
-            }
+            },
+            backgroundColor = MaterialTheme.colorScheme.background
         ) {
             Box(
                 modifier = Modifier
@@ -101,7 +102,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                             fontSize = 24.sp,
                             fontStyle = FontStyle.Normal,
                             fontWeight = FontWeight.Bold,
-                            color = colors.onPrimary
+                            color = MaterialTheme.colorScheme.onBackground
                         ),
                         singleLine = true
                     )
@@ -120,7 +121,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                             .padding(16.dp),
                         textStyle = TextStyle(
                             fontSize = 16.sp,
-                            color = colors.onPrimary
+                            color = MaterialTheme.colorScheme.onBackground
                         ),
                         singleLine = true,
                     )

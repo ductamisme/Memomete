@@ -1,5 +1,6 @@
 package com.twoup.personalfinance.features.note.ui.Note
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -64,7 +64,7 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                             "Edit Note",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onPrimary
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     },
                     navigationIcon = {
@@ -74,11 +74,11 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = null,
-                                tint = MaterialTheme.colors.onPrimary
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     },
-                    backgroundColor = MaterialTheme.colors.primary,
+                    backgroundColor = MaterialTheme.colorScheme.primary,
                     elevation = AppBarDefaults.TopAppBarElevation,
                     actions = {
                         IconButton(
@@ -89,12 +89,13 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
                                 contentDescription = null,
-                                tint = MaterialTheme.colors.onPrimary
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     }
                 )
-            }
+            },
+            backgroundColor = MaterialTheme.colorScheme.background
         ) {
             Box(
                 modifier = Modifier
@@ -118,7 +119,7 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                             fontSize = 24.sp,
                             fontStyle = FontStyle.Normal,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onPrimary
+                            color = MaterialTheme.colorScheme.onBackground
                         ),
                         singleLine = true
                     )
@@ -137,7 +138,7 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                             .padding(16.dp),
                         textStyle = TextStyle(
                             fontSize = 16.sp,
-                            color = MaterialTheme.colors.onPrimary
+                            color = MaterialTheme.colorScheme.onBackground
                         ),
                         singleLine = true,
                     )

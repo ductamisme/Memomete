@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,8 +45,8 @@ fun ItemNoteTrash(
         Card(
             shape = RoundedCornerShape(8.dp),
             elevation = 4.dp,
-            backgroundColor = Color.White,
-            border = BorderStroke(1.dp, Color.LightGray),
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+//            border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.outline),
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .clickable(onClick = onNoteClick)
@@ -72,7 +73,7 @@ fun ItemNoteTrash(
                         Icon(
                             Icons.Default.Clear,
                             contentDescription = "Clear Icon",
-                            tint = Color.Gray
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                 }
@@ -106,12 +107,12 @@ fun ItemNoteTrash(
             fontSize = 18.sp,
             fontStyle = FontStyle.Italic,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onPrimaryContainer
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = formattedDate,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.outline,
         )
     }
 }

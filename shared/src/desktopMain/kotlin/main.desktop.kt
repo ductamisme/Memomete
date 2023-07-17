@@ -1,4 +1,6 @@
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.twoup.personalfinance.ui.MainComposeView
 import com.twoup.personalfinance.viewmodel.ApplicationViewModel
 
@@ -12,5 +14,10 @@ import com.twoup.personalfinance.viewmodel.ApplicationViewModel
 
 @Composable
 fun MainView(viewModel: ApplicationViewModel) {
-    MainComposeView(viewModel = viewModel)
+    MainComposeView(
+        darkTheme = isSystemInDarkTheme(),
+        dynamicColor = true,
+        modifier = Modifier,
+        viewModel = viewModel
+    )
 }

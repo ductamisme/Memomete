@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -34,6 +34,7 @@ fun NoteViewTrash(
     val trashNotes = notes.filter { it.trash != null && it.trash == 1L }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
     var selectedNote: NoteEntity? by remember { mutableStateOf(null) }
+    var showDeleteAllConfirmation by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
@@ -44,6 +45,7 @@ fun NoteViewTrash(
             Text(
                 text = "Your Trash",
                 fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             if (!showUp) {
@@ -60,7 +62,7 @@ fun NoteViewTrash(
                             Icon(
                                 Icons.Default.KeyboardArrowDown,
                                 contentDescription = "Drop down",
-                                tint = colors.primaryVariant,
+                                tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.size(30.dp)
                             )
                         }
@@ -71,7 +73,7 @@ fun NoteViewTrash(
                             Icon(
                                 Icons.Default.KeyboardArrowUp,
                                 contentDescription = "Forward",
-                                tint = colors.primaryVariant,
+                                tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.size(30.dp)
                             )
                         }
@@ -85,11 +87,12 @@ fun NoteViewTrash(
                 ) {
                     Button(
                         onClick = {
-                            viewModel.deleteAllNotesDeleted()
+                            showDeleteAllConfirmation = true
                         },
-                        enabled = showUp
+                        enabled = showUp,
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                     ) {
-                        Text("Clear all")
+                        Text("Clear all", color = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
             }
@@ -130,6 +133,19 @@ fun NoteViewTrash(
                 }
             }
         }
+    }
+    if (trashNotes.isNotEmpty()) {
+        dialog(
+            showDeleteConfirmation = showDeleteAllConfirmation,
+            onYesClick = {
+                viewModel.deleteAllNotesDeleted()
+                showDeleteAllConfirmation = false
+            },
+            onCancelClick = {
+                showDeleteAllConfirmation = false
+            },
+            titleDialog = "Are you sure delete all the notes?"
+        )
     }
 
     if (showDeleteConfirmation && selectedNote != null) {

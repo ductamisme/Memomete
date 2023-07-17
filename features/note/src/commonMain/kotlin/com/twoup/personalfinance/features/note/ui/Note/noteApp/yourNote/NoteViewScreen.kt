@@ -6,15 +6,17 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
@@ -33,9 +35,9 @@ fun NoteViews(
     fromOldest: () -> Unit
 ) {
     val trashNotes = notes.filter { it.trash == 0L }
+    var showDeleteAllConfirmation by remember { mutableStateOf(false) }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
     var selectedNote: NoteEntity? by remember { mutableStateOf(null) }
-
     Box() {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -46,6 +48,7 @@ fun NoteViews(
                 Text(
                     text = "Your notes",
                     fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 if (!showUp) {
@@ -62,7 +65,7 @@ fun NoteViews(
                                 Icon(
                                     Icons.Default.KeyboardArrowDown,
                                     contentDescription = "Drop down",
-                                    tint = colors.primaryVariant,
+                                    tint = MaterialTheme.colorScheme.onBackground,
                                     modifier = Modifier.size(30.dp)
                                 )
                                 Napier.d(
@@ -77,7 +80,7 @@ fun NoteViews(
                                 Icon(
                                     Icons.Default.KeyboardArrowUp,
                                     contentDescription = "Forward",
-                                    tint = colors.primaryVariant,
+                                    tint = MaterialTheme.colorScheme.onBackground,
                                     modifier = Modifier.size(30.dp)
                                 )
                                 Napier.d(
@@ -95,11 +98,12 @@ fun NoteViews(
                     ) {
                         Button(
                             onClick = {
-                                showDeleteConfirmation = true
+                                showDeleteAllConfirmation = true
                             },
-                            enabled = showUp
+                            enabled = showUp,
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                         ) {
-                            Text("Clear all")
+                            Text("Clear all", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }
@@ -139,19 +143,19 @@ fun NoteViews(
         }
         if (trashNotes.isNotEmpty()) {
             dialog(
-                showDeleteConfirmation = showDeleteConfirmation,
+                showDeleteConfirmation = showDeleteAllConfirmation,
                 onYesClick = {
                     trashNotes.forEach { note ->
                         note.trash = 1L
                         viewModel.updateNote(note)
                     }
-                    viewModel.loadNoteNoteContainTrash()
-                    showDeleteConfirmation = false
+//                    viewModel.loadNoteNoteContainTrash()
+                    showDeleteAllConfirmation = false
                 },
                 onCancelClick = {
-                    showDeleteConfirmation = false
+                    showDeleteAllConfirmation = false
                 },
-                titleDialog = "Are you sure delete all the notes?"
+                titleDialog = "Are you sure you want to delete all the notes?"
             )
         }
 
@@ -159,20 +163,17 @@ fun NoteViews(
             dialog(
                 showDeleteConfirmation = showDeleteConfirmation,
                 onYesClick = {
-//                    viewModel.updateNote(selectedNote!!.copy(trash = 1L))
                     selectedNote?.trash = if (selectedNote?.trash == 0L) 1L else 0L
                     viewModel.updateNote(selectedNote!!)
-                    viewModel.loadNoteNoteContainTrash()
+//                    viewModel.loadNoteNoteContainTrash()
                     showDeleteConfirmation = false
                 },
                 onCancelClick = {
                     showDeleteConfirmation = false
                 },
-                titleDialog = "Are you sure delete this note?"
+                titleDialog = "Are you sure you want to delete this note?"
             )
         }
     }
 }
-
-
 

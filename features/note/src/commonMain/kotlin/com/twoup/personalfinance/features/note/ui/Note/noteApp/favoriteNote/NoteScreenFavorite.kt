@@ -4,7 +4,7 @@ import androidx.compose.material.DrawerValue
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -35,7 +35,6 @@ class NoteScreenFavorite : Screen {
         val searchScreen = rememberScreen(SharedScreen.SearchNote)
         val addNoteScreen = rememberScreen(SharedScreen.AddNoteScreen)
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
-        val settingScreen = rememberScreen(SharedScreen.SettingScreen)
         val notes by viewModel.notes.collectAsState(emptyList())
         val showUp by viewModel.showUp.collectAsState()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -48,7 +47,7 @@ class NoteScreenFavorite : Screen {
         ModalDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(notes)
+                DrawerContent(viewModel)
             },
             content = {
                 Scaffold(
@@ -61,16 +60,16 @@ class NoteScreenFavorite : Screen {
                             drawerState
                         )
                     },
-                    backgroundColor = Color.White,
+                    backgroundColor = MaterialTheme.colorScheme.background,
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = { navigator.push(addNoteScreen) },
-                            backgroundColor = MaterialTheme.colors.primary,
+                            backgroundColor = MaterialTheme.colorScheme.primary,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = "Add",
-                                tint = MaterialTheme.colors.onPrimary
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     },

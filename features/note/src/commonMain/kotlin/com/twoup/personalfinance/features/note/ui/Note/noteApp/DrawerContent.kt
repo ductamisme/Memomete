@@ -19,20 +19,20 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.DrawerItem
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import com.twoup.personalfinance.features.people.ui.icons.Description
 import com.twoup.personalfinance.features.people.ui.icons.Settings
 import com.twoup.personalfinance.model.note.local.NoteEntity
@@ -61,44 +61,54 @@ fun DrawerItem(
             tint = if (isSelected) colors.primary else colors.primaryVariant.copy(alpha = 0.6f),
             modifier = Modifier.size(24.dp)
         )
+
         Spacer(modifier = Modifier.width(16.dp))
+
         Text(
             text = text,
             style = typography.subtitle1.copy(
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                 color = if (isSelected) colors.primary else colors.primaryVariant.copy(alpha = 0.6f)
             ),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            fontSize = 16.sp
         )
         Text(
-            text = textEnd.takeIf { it.isNotEmpty() } ?: "-",
-            modifier = Modifier.weight(0.2f)
+            text = textEnd.takeIf { it.isNotEmpty() } ?: "",
+            modifier = Modifier.weight(0.2f),
+            fontSize = 16.sp
+
         )
     }
 }
 
 @Composable
-fun DrawerContent(notes: List<NoteEntity>) {
+fun DrawerContent(viewModel: NoteViewModel) {
     val colors = MaterialTheme.colors
-    var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
+    val selectedItemIndex by viewModel.selectedItemIndex.collectAsState(0)
+    val notes by viewModel.notes.collectAsState()
+    val tags by viewModel.tags.collectAsState()
 
     val mainNotesCount = notes.count { it.trash == 0L }
-    val favoriteNotesCount = notes.count { it.favourite == 1L }
+    val favoriteNotesCount = notes.count { it.favourite == 1L && it.trash == 0L }
     val trashNotesCount = notes.count { it.trash == 1L }
+//    val tagNotesCount = tags.count {  }
 
     val navigator = LocalNavigator.currentOrThrow
     val noteScreen = rememberScreen(SharedScreen.NoteScreen)
     val noteFavoriteScreen = rememberScreen(SharedScreen.NoteScreenFavorite)
     val noteTrashScreen = rememberScreen(SharedScreen.NoteTrashScreen)
     val noteSettingScreen = rememberScreen(SharedScreen.SettingScreen)
+    val noteTagScreen = rememberScreen(SharedScreen.NoteTagScreen)
+    val noteFolderScreen = rememberScreen(SharedScreen.NoteFolderScreen)
 
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Menu",
             style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
-            color = colors.onPrimary,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            color = colors.primary,
+            modifier = Modifier.padding(horizontal = 30.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -106,31 +116,31 @@ fun DrawerContent(notes: List<NoteEntity>) {
             icon = Icons.Default.Description,
             text = "Your Notes",
             textEnd = mainNotesCount.toString(),
-            isSelected = selectedItemIndex == 0,
+            isSelected = selectedItemIndex == DrawerItem.YOUR_NOTES,
             onClick = {
-                selectedItemIndex = 0
                 navigator.push(noteScreen)
+                viewModel.setSelectedItemIndex(DrawerItem.YOUR_NOTES)
             }
         )
-
         DrawerItem(
             icon = Icons.Default.Favorite,
             text = "Favorites",
             textEnd = favoriteNotesCount.toString(),
-            isSelected = selectedItemIndex == 1,
+            isSelected = selectedItemIndex == DrawerItem.FAVORITES,
             onClick = {
-                selectedItemIndex = 1
                 navigator.push(noteFavoriteScreen)
+                viewModel.setSelectedItemIndex(DrawerItem.FAVORITES)
             }
         )
 
         DrawerItem(
             icon = Icons.Default.Star,
             text = "Tags",
-            textEnd = notes.size.toString(),
-            isSelected = selectedItemIndex == 2,
+            textEnd = tags.size.toString(),
+            isSelected = selectedItemIndex == DrawerItem.TAGS,
             onClick = {
-                selectedItemIndex = 2
+                navigator.push(noteTagScreen)
+                viewModel.setSelectedItemIndex(DrawerItem.TAGS)
             }
         )
 
@@ -138,31 +148,32 @@ fun DrawerContent(notes: List<NoteEntity>) {
             icon = Icons.Default.Delete,
             text = "Trash",
             textEnd = trashNotesCount.toString(),
-            isSelected = selectedItemIndex == 3,
+            isSelected = selectedItemIndex == DrawerItem.TRASH,
             onClick = {
-                selectedItemIndex = 3
                 navigator.push(noteTrashScreen)
+                viewModel.setSelectedItemIndex(DrawerItem.TRASH)
             }
         )
 
         DrawerItem(
             icon = Icons.Default.Create,
             text = "Folders",
-            isSelected = selectedItemIndex == 4,
-            textEnd = notes.size.toString(),
+            isSelected = selectedItemIndex == DrawerItem.FOLDERS,
+            textEnd = "0",
             onClick = {
-                selectedItemIndex = 4
+                navigator.push(noteFolderScreen)
+                viewModel.setSelectedItemIndex(DrawerItem.FOLDERS)
             }
         )
 
         DrawerItem(
             icon = Icons.Default.Settings,
             text = "Settings",
-            textEnd = notes.size.toString(),
-            isSelected = selectedItemIndex == 5,
+            textEnd = "",
+            isSelected = selectedItemIndex == DrawerItem.SETTINGS,
             onClick = {
-                selectedItemIndex = 5
                 navigator.push(noteSettingScreen)
+                viewModel.setSelectedItemIndex(DrawerItem.SETTINGS)
             }
         )
     }

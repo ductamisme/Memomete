@@ -1,4 +1,4 @@
-package com.twoup.personalfinance.local.note.usecase
+package com.twoup.personalfinance.local.note.usecase.note
 
 import com.twoup.personalfinance.local.note.NoteLocalDataSource
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -7,12 +7,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UseCaseDeleteNoteDeletedById(private val dataSource: NoteLocalDataSource) {
+class UseCaseDeleteAllNote(private val dataSource : NoteLocalDataSource) {
+
     @OptIn(DelicateCoroutinesApi::class)
-    fun deleteNoteDeletedById(id:Long, loadNote: Unit){
+    fun deleteALlNote(loadNote: Unit){
         GlobalScope.launch {
             withContext(Dispatchers.Main){
-                dataSource.deleteNoteDeletedById(id)
+                dataSource.deleteAllNote()
                 loadNote
             }
         }

@@ -20,4 +20,6 @@ object Colors {
     val darkBlue = Color(0xFF1565C0)
     val navyBlue = Color(0xFF0D47A1)
     val skyBlue = Color(0xFF82B1FF)
+    val lighterNavyBlue = Color(0xFF91D2FF)
+    val lighterSkyBlue = Color(0xFFC5E1FF)
 }

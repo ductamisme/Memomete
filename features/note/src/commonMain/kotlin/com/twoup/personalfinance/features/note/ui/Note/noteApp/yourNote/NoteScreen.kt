@@ -24,6 +24,7 @@ import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteVie
 import com.twoup.personalfinance.local.date.DateTimeUtil
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class NoteScreen : Screen {
     @Composable
@@ -35,8 +36,9 @@ class NoteScreen : Screen {
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
         val notes by viewModel.notes.collectAsState(emptyList())
         val showUp by viewModel.showUp.collectAsState()
-        val searchResult by viewModel.searchResults.collectAsState()
-        val selectedNote by viewModel.selectedNote.collectAsState()
+//        var showUp = remember { MutableStateFlow(false) }
+        val notesFromOldTONew = notes.sortedByDescending { it.created }
+        var oldOrNew by remember { mutableStateOf(false) }
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
@@ -47,7 +49,7 @@ class NoteScreen : Screen {
         ModalDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(notes)
+                DrawerContent(viewModel)
             },
             content = {
                 Scaffold(
@@ -57,10 +59,11 @@ class NoteScreen : Screen {
                             onAvatarClick = { navigator.push(avatarScreen) },
                             onDeleteClicked = { viewModel.changeShowUp() },
                             scope,
-                            drawerState
+                            drawerState,
+                            viewModel
                         )
                     },
-                    backgroundColor = Color.White,
+                    backgroundColor = MaterialTheme.colors.background,
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = { navigator.push(addNoteScreen) },
@@ -75,43 +78,13 @@ class NoteScreen : Screen {
                     },
                     floatingActionButtonPosition = FabPosition.End
                 ) {
-                    if (searchResult.value.isEmpty()) {
-                        NoteViews(
-                            notes = notes, viewModel = viewModel,
-                            navigator = navigator,
-                            showUp = showUp,
-                            fromNewest = { viewModel.fromNewest() },
-                            fromOldest = { viewModel.fromOldest() },
-                        )
-                        Napier.d(
-                            tag = "Test on searchResult.value",
-                            message = searchResult.value.toString()
-                        )
-                    } else {
-                        LazyColumn(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-                            items(searchResult.value) { note ->
-                                val editScreen = rememberScreen(
-                                    SharedScreen.EditNoteScreen(
-                                        selectedNote ?: NoteEntity(
-                                            note.id,
-                                            note.title,
-                                            note.description,
-                                            DateTimeUtil.now(),
-                                            note.favourite,
-                                            note.trash
-                                        )
-                                    )
-                                )
-                                ItemNotesSearch(
-                                    note,
-                                ) { navigator.push(editScreen) }
-                            }
-                            Napier.d(
-                                tag = "Test on searchResult.value",
-                                message = searchResult.value.toString()
-                            )
-                        }
-                    }
+                    NoteViews(
+                        notes = if (oldOrNew) notes else notesFromOldTONew, viewModel = viewModel,
+                        navigator = navigator,
+                        showUp = showUp,
+                        fromNewest = { oldOrNew = false },
+                        fromOldest = { oldOrNew = true },
+                    )
                     Napier.d(tag = "Test on show up", message = showUp.toString())
                 }
             }

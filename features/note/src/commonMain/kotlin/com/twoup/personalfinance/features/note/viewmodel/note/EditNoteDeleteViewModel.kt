@@ -1,13 +1,9 @@
 package com.twoup.personalfinance.features.note.viewmodel.note
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import com.twoup.personalfinance.local.note.usecase.UseCaseDeleteNoteById
-import com.twoup.personalfinance.local.note.usecase.UseCaseGetAllNote
-import com.twoup.personalfinance.local.note.usecase.UseCaseUpdateNote
 import com.twoup.personalfinance.local.noteDelete.usecase.UseCaseDeleteNoteDeleteById
 import com.twoup.personalfinance.local.noteDelete.usecase.UseCaseGetAllNoteDelete
 import com.twoup.personalfinance.local.noteDelete.usecase.UseCaseUpdateNoteDelete
-import com.twoup.personalfinance.model.note.local.NoteEntity
 import com.twoup.personalfinance.model.noteDelete.local.NoteDeleteEntity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

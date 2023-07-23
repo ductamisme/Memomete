@@ -2,64 +2,42 @@ package com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import com.twoup.personalfinance.local.note.NoteLocalDataSource
-import com.twoup.personalfinance.local.note.usecase.UseCaseDeleteAllNote
-import com.twoup.personalfinance.local.note.usecase.UseCaseDeleteAllNoteDeleted
-import com.twoup.personalfinance.local.note.usecase.UseCaseDeleteNoteById
-import com.twoup.personalfinance.local.note.usecase.UseCaseDeleteNoteDeletedById
-import com.twoup.personalfinance.local.note.usecase.UseCaseGetAllNote
+import com.twoup.personalfinance.local.note.usecase.note.UseCaseDeleteAllNote
+import com.twoup.personalfinance.local.note.usecase.note.UseCaseDeleteAllNoteDeleted
+import com.twoup.personalfinance.local.note.usecase.UseCaseDeleteBy30Days
+import com.twoup.personalfinance.local.note.usecase.note.UseCaseDeleteNoteById
+import com.twoup.personalfinance.local.note.usecase.note.UseCaseDeleteNoteDeletedById
+import com.twoup.personalfinance.local.note.usecase.note.UseCaseGetAllNote
 import com.twoup.personalfinance.local.note.usecase.UseCaseSearchNoteFromOldTONew
-import com.twoup.personalfinance.local.note.usecase.UseCaseUpdateNote
+import com.twoup.personalfinance.local.note.usecase.note.UseCaseUpdateNote
+import com.twoup.personalfinance.local.note.usecase.tag.UseCaseGetAllTags
 import com.twoup.personalfinance.model.note.local.NoteEntity
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import com.twoup.personalfinance.model.note.local.TagEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDateTime
 import org.brightify.hyperdrive.multiplatformx.BaseViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class NoteViewModel : BaseViewModel(), ScreenModel, KoinComponent {
 
-    private val useCaseDeleteNoteById: UseCaseDeleteNoteById by inject()
     private val useCaseGetAllNote: UseCaseGetAllNote by inject()
-    private val useCaseDeleteAllNote: UseCaseDeleteAllNote by inject()
     private val useCaseUpdateNote: UseCaseUpdateNote by inject()
-    private val useCaseSearchNoteFromOldTONew: UseCaseSearchNoteFromOldTONew by inject()
     private val useCaseDeleteAllNoteDeleted : UseCaseDeleteAllNoteDeleted by inject()
     private val useCaseDeleteNoteDeletedById : UseCaseDeleteNoteDeletedById by inject()
+    private val useCaseDeleteBy30Days : UseCaseDeleteBy30Days by inject()
+    private val useCaseGetAllTags : UseCaseGetAllTags by inject()
 
     val notes: StateFlow<List<NoteEntity>> get() = useCaseGetAllNote.noteState.asStateFlow()
+    val tags: StateFlow<List<TagEntity>> get() = useCaseGetAllTags.tagState.asStateFlow()
     var showUp: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _selectedItemIndex = MutableStateFlow(DrawerItem.YOUR_NOTES)
+    val selectedItemIndex: MutableStateFlow<DrawerItem> get() = _selectedItemIndex
 
-
-    private val _searchResult = useCaseSearchNoteFromOldTONew.searchResults
-    private val _searchResultsFlow = MutableStateFlow(_searchResult)
-    private val _selectedNote = MutableStateFlow<NoteEntity?>(null)
-    val selectedNote: StateFlow<NoteEntity?> = _selectedNote.asStateFlow()
-    val searchResults: MutableStateFlow<StateFlow<List<NoteEntity>>> = _searchResultsFlow
-
-    @OptIn(DelicateCoroutinesApi::class)
-    fun fromNewest() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main){
-                useCaseSearchNoteFromOldTONew.noteNewest()
-                useCaseSearchNoteFromOldTONew.searchResults
-            }
-        }
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    fun fromOldest() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main){
-                useCaseSearchNoteFromOldTONew.noteOldest()
-                useCaseSearchNoteFromOldTONew.searchResults
-            }
-        }
+    fun setSelectedItemIndex(item: DrawerItem) {
+        _selectedItemIndex.value = item
     }
 
     fun changeShowUp() {
@@ -67,19 +45,13 @@ class NoteViewModel : BaseViewModel(), ScreenModel, KoinComponent {
     }
     init {
         loadNotes()
+        loadNoteNoteContainTrash()
     }
 
-    fun deleteNoteById(id: Long) {
-        useCaseDeleteNoteById.deleteNoteById(id, loadNotes())
+    fun deleteNoteBy30Days(id: Long, createdDateTime: LocalDateTime) {
+        useCaseDeleteBy30Days.deleteNoteBy30Days(id, loadNotes(),createdDateTime)
         loadNotes()
     }
-
-    fun deleteNotes() {
-        useCaseDeleteAllNote.deleteALlNote(loadNotes())
-        loadNotes()
-
-    }
-
     fun deleteNoteDeletedById(id: Long) {
         useCaseDeleteNoteDeletedById.deleteNoteDeletedById(id, loadNotes())
         loadNotes()
@@ -95,15 +67,27 @@ class NoteViewModel : BaseViewModel(), ScreenModel, KoinComponent {
         useCaseGetAllNote.getAllNote()
     }
 
+    fun loadTags() {
+        useCaseGetAllTags.getAllTag()
+    }
     fun loadNoteNoteContainTrash() {
         useCaseGetAllNote.getAllNoteNotContainTrash()
     }
 
     fun updateNote(note: NoteEntity) {
-        useCaseUpdateNote.updateNote(note, useCaseGetAllNote.getAllNote())
+        useCaseUpdateNote.updateNote(note, useCaseGetAllNote.getAllNoteNotContainTrash())
     }
 
     class Factory(private val dataSource: NoteLocalDataSource) {
         fun create() = NoteViewModel()
     }
+}
+
+enum class DrawerItem {
+    YOUR_NOTES,
+    FAVORITES,
+    TAGS,
+    TRASH,
+    FOLDERS,
+    SETTINGS
 }

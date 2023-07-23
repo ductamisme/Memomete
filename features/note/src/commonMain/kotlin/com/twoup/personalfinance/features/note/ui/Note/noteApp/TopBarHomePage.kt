@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,8 @@ fun TopBarHomePage(
     onAvatarClick: () -> Unit,
     onDeleteClicked: () -> Unit,
     scope: CoroutineScope = rememberCoroutineScope(),
-    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    viewModel: NoteViewModel
 ) {
     TopAppBar(
         title = {
@@ -34,9 +36,9 @@ fun TopBarHomePage(
             IconButton(onClick = onSearchClicked) {
                 Icon(Icons.Filled.Search, contentDescription = "Search")
             }
-            IconButton(onClick = onAvatarClick) {
-                Icon(Icons.Filled.Person, contentDescription = "Avatar")
-            }
+//            IconButton(onClick = onAvatarClick) {
+//                Icon(Icons.Filled.Person, contentDescription = "Avatar")
+//            }
             IconButton(onClick = onDeleteClicked) {
                 Icon(Icons.Default.Delete, contentDescription = "Delete")
             }
@@ -45,6 +47,7 @@ fun TopBarHomePage(
             IconButton(onClick = {
                 scope.launch {
                     drawerState.open()
+                    viewModel.loadNotes()
                 }
             }
             ) {

@@ -27,7 +27,7 @@ kotlin {
                 implementation(project(":domain"))
                 implementation(project(":data:model"))
                 implementation(project(":data:local"))
-                implementation(project(":extension"))
+//                implementation(project(":extension"))
 
                 api(libs.uuid)
 

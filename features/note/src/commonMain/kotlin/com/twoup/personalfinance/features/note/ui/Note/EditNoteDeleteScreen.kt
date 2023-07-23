@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Icon
@@ -37,6 +38,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.ui.text.input.KeyboardType
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.dialog
 import com.twoup.personalfinance.features.note.viewmodel.note.EditNoteDeleteUiState
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
@@ -120,8 +122,9 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colors.onPrimary
                         ),
-                        singleLine = true
-                    )
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+                        )
 
                     TransparentHintTextField(
                         text = uiState.description,
@@ -139,8 +142,9 @@ class EditNoteDeleteScreen(private val note: NoteEntity) : Screen {
                             fontSize = 16.sp,
                             color = MaterialTheme.colors.onPrimary
                         ),
-                        singleLine = true,
-                    )
+                        singleLine = false,
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+                        )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
@@ -172,6 +176,7 @@ fun saveNote(uiState: EditNoteDeleteUiState, viewModel: NoteViewModel) {
         uiState.title,
         uiState.description,
         uiState.created,
+        uiState.deleteCreated,
         uiState.favourite,
         uiState.trash
     )

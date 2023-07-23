@@ -40,7 +40,7 @@ val DarkColorPalette = darkColors(
     // Variant of the primary color, can be used to create visual hierarchy
     primaryVariant = Colors.darkGray,
     // Secondary color used for secondary UI elements and accents
-    secondary = Colors.emeraldGreen,
+    secondary = Colors.lighterSkyBlue,
     // Variant of the secondary color, can be used to create visual hierarchy
     secondaryVariant = Colors.gray,
     // Surface color used for the background of cards, dialogs, and surfaces
@@ -67,7 +67,7 @@ val LightColorPalette = lightColors(
     // On-primary color used for text and icons on the primary color
     onPrimary = Color.Black,
     // Secondary color used for secondary UI elements and accents
-    secondary = Colors.emeraldGreen,
+    secondary = Colors.lighterSkyBlue,
     // Variant of the secondary color, can be used to create visual hierarchy
     secondaryVariant = Colors.coral,
     // On-secondary color used for text and icons on the secondary color

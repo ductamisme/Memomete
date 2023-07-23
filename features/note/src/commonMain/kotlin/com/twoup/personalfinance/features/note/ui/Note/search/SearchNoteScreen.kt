@@ -127,12 +127,13 @@ class SearchNoteScreen : Screen {
                         val editScreen = rememberScreen(
                             SharedScreen.EditNoteScreen(
                                 selectedNote ?: NoteEntity(
-                                    note.id,
-                                    note.title,
-                                    note.description,
-                                    DateTimeUtil.now(),
-                                    note.favourite,
-                                    note.trash
+                                    id =note.id,
+                                    title = note.title,
+                                    description = note.description,
+                                    created = note.created,
+                                    deleteCreated = note.deleteCreated,
+                                    favourite = note.favourite,
+                                    trash = note.trash
                                 )
                             )
                         )

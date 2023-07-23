@@ -12,6 +12,10 @@ fun NoteDatabase.toNote(): NoteEntity{
         description = description,
         created = Instant.fromEpochMilliseconds(created).toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()),
         favourite = favorite,
-        trash = trash
+        trash = trash,
+        deleteCreated = Instant.fromEpochMilliseconds(created).toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault())
     )
 }
+
+
+

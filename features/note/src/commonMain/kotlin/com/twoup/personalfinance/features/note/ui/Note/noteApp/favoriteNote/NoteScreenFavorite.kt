@@ -14,7 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.registry.rememberScreen
@@ -35,8 +38,9 @@ class NoteScreenFavorite : Screen {
         val searchScreen = rememberScreen(SharedScreen.SearchNote)
         val addNoteScreen = rememberScreen(SharedScreen.AddNoteScreen)
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
-        val settingScreen = rememberScreen(SharedScreen.SettingScreen)
+        var oldOrNew by remember { mutableStateOf(false) }
         val notes by viewModel.notes.collectAsState(emptyList())
+        val notesFromOldTONew = notes.sortedByDescending { it.created }
         val showUp by viewModel.showUp.collectAsState()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
@@ -48,7 +52,7 @@ class NoteScreenFavorite : Screen {
         ModalDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(notes)
+                DrawerContent(viewModel)
             },
             content = {
                 Scaffold(
@@ -58,30 +62,31 @@ class NoteScreenFavorite : Screen {
                             onAvatarClick = { navigator.push(avatarScreen) },
                             onDeleteClicked = { viewModel.changeShowUp() },
                             scope,
-                            drawerState
+                            drawerState,
+                            viewModel
                         )
                     },
                     backgroundColor = Color.White,
-                    floatingActionButton = {
-                        FloatingActionButton(
-                            onClick = { navigator.push(addNoteScreen) },
-                            backgroundColor = MaterialTheme.colors.primary,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "Add",
-                                tint = MaterialTheme.colors.onPrimary
-                            )
-                        }
-                    },
-                    floatingActionButtonPosition = FabPosition.End
+//                    floatingActionButton = {
+//                        FloatingActionButton(
+//                            onClick = { navigator.push(addNoteScreen) },
+//                            backgroundColor = MaterialTheme.colors.primary,
+//                        ) {
+//                            Icon(
+//                                imageVector = Icons.Default.Add,
+//                                contentDescription = "Add",
+//                                tint = MaterialTheme.colors.onPrimary
+//                            )
+//                        }
+//                    },
+//                    floatingActionButtonPosition = FabPosition.End
                 ) {
                     NoteViewFavorite(
-                        notes = notes, viewModel = viewModel,
+                        notes = if (oldOrNew) notes else notesFromOldTONew, viewModel = viewModel,
                         navigator = navigator,
                         showUp = showUp,
-                        fromOldest = {viewModel.fromOldest()},
-                        fromNewest = {viewModel.fromNewest()}
+                        fromOldest = { oldOrNew = true },
+                        fromNewest = { oldOrNew = false }
                     )
                     Napier.d(tag = "Test on show up", message = showUp.toString())
                 }

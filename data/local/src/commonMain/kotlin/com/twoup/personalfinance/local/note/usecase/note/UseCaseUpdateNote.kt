@@ -1,4 +1,4 @@
-package com.twoup.personalfinance.local.note.usecase
+package com.twoup.personalfinance.local.note.usecase.note
 
 import com.twoup.personalfinance.local.note.NoteLocalDataSource
 import com.twoup.personalfinance.model.note.local.NoteEntity
@@ -20,8 +20,9 @@ class UseCaseUpdateNote(private val dataSource: NoteLocalDataSource) {
                         note.title,
                         note.description,
                         note.created,
+                        note.deleteCreated,
                         note.favourite,
-                        note.trash
+                        note.trash,
                     )
                 )
             }

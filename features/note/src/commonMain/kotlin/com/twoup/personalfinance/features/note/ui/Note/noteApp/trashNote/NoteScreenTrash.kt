@@ -8,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.registry.rememberScreen
@@ -31,17 +34,22 @@ class NoteScreenTrash : Screen {
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
         val notes by viewModel.notes.collectAsState(emptyList())
         val showUp by viewModel.showUp.collectAsState()
+        val notesFromOldTONew = notes.sortedByDescending { it.created }
+        var oldOrNew by remember { mutableStateOf(false) }
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
         LaunchedEffect(navigator) {
             viewModel.loadNotes()
+                notes.forEach{ note ->
+                    note.id?.let { viewModel.deleteNoteBy30Days(it, note.deleteCreated) }
+                }
         }
 
         ModalDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(notes)
+                DrawerContent(viewModel)
             },
             content = {
                 Scaffold(
@@ -51,16 +59,18 @@ class NoteScreenTrash : Screen {
                             onAvatarClick = { navigator.push(avatarScreen) },
                             onDeleteClicked = { viewModel.changeShowUp() },
                             scope,
-                            drawerState
+                            drawerState,
+                            viewModel
                         )
                     },
                     backgroundColor = Color.White
                 ) {
                     NoteViewTrash(
-                        notes = notes, viewModel = viewModel,
+                        notes = if (oldOrNew) notes else notesFromOldTONew, viewModel = viewModel,
                         navigator = navigator,
                         showUp = showUp,
-                        onSettingClicked = {  }
+                        fromOldest = { oldOrNew = true },
+                        fromNewest = { oldOrNew = false }
                     )
                     Napier.d(tag = "Test on show up", message = showUp.toString())
                 }

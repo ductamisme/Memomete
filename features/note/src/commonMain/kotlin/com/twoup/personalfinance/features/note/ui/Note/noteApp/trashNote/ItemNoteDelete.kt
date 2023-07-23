@@ -44,8 +44,8 @@ fun ItemNoteTrash(
         Card(
             shape = RoundedCornerShape(8.dp),
             elevation = 4.dp,
-            backgroundColor = Color.White,
-            border = BorderStroke(1.dp, Color.LightGray),
+            backgroundColor = MaterialTheme.colors.secondary,
+//            border = BorderStroke(1.dp, Color.LightGray),
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .clickable(onClick = onNoteClick)
@@ -56,7 +56,8 @@ fun ItemNoteTrash(
                 Text(
                     text = noteEntity.description,
                     fontSize = 12.sp,
-                    fontStyle = FontStyle.Normal
+                    fontStyle = FontStyle.Normal,
+                    color = Color.Black
                 )
             }
             AnimatedVisibility(
@@ -72,7 +73,7 @@ fun ItemNoteTrash(
                         Icon(
                             Icons.Default.Clear,
                             contentDescription = "Clear Icon",
-                            tint = Color.Gray
+                            tint = Color.Black
                         )
                     }
                 }
@@ -85,7 +86,6 @@ fun ItemNoteTrash(
                 Box(modifier = Modifier.padding(8.dp)) {
                     IconButton(
                         onClick = {
-//                            showDeleteConfirmation = true
                             showDialog()
                         },
                         modifier = Modifier.align(Alignment.TopEnd),

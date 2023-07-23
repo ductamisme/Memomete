@@ -94,8 +94,6 @@ class AvatarScreen : Screen {
             viewModel.getAllInformation()
         }
 
-
-
         Scaffold(
             topBar = {
                 TopAppBar(

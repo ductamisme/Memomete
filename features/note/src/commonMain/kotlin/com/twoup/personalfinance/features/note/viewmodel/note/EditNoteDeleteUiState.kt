@@ -12,6 +12,7 @@ class EditNoteDeleteUiState(note: NoteEntity) {
     var title by mutableStateOf(note.title)
     var description by mutableStateOf(note.description)
     var created by mutableStateOf(note.created)
+    var deleteCreated by mutableStateOf(note.deleteCreated)
     var favourite by mutableStateOf(note.favourite )
     var trash by mutableStateOf(note.trash )
 

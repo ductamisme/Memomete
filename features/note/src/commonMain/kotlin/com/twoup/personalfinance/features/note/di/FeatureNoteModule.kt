@@ -12,6 +12,8 @@ import com.twoup.personalfinance.features.note.ui.Note.noteApp.favoriteNote.Note
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.trashNote.NoteScreenTrash
 import com.twoup.personalfinance.features.note.ui.Note.search.SearchNoteScreen
 import com.twoup.personalfinance.features.note.ui.Note.information.AvatarViewModel
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.folderNote.NoteFolderScreen
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.tagNote.NoteTagScreen
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
 import org.koin.dsl.module
 
@@ -46,6 +48,12 @@ val noteModule = screenModule {
     }
     register<SharedScreen.NoteTrashScreen> {
         NoteScreenTrash()
+    }
+    register<SharedScreen.NoteTagScreen> {
+        NoteTagScreen()
+    }
+    register<SharedScreen.NoteFolderScreen> {
+        NoteFolderScreen()
     }
     register<SharedScreen.EditNoteTrashScreen> { provider ->
         EditNoteDeleteScreen(note = provider.note)

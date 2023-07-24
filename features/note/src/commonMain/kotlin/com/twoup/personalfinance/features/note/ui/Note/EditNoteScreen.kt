@@ -46,6 +46,7 @@ import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.EditNot
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.EditNoteViewModel
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import com.twoup.personalfinance.model.note.local.TagEntity
+import io.github.aakira.napier.Napier
 
 class EditNoteScreen(private val note: NoteEntity) : Screen {
     @Composable
@@ -57,14 +58,16 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
         val scrollState = rememberScrollState()
         var isHintTitleVisible by remember { mutableStateOf(uiState.title.isEmpty()) }
         var isHintDescriptionVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
-//        var showTagDiaLog by remember { mutableStateOf(false) }
+        var showTagDiaLog by remember { mutableStateOf(false) }
 //        val tags by viewModel.tags.collectAsState()
-//
-//        val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-//            cursorColor = Color.Black,
-//            focusedBorderColor = Color.Black,
-//            focusedLabelColor = Color.Black,
-//        )
+
+        val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+            cursorColor = Color.Black,
+            focusedBorderColor = Color.Black,
+            focusedLabelColor = Color.Black,
+        )
+        Napier.d(tag = "Test edit note ", message = uiState.id.toString())
+        Napier.d(tag = "Test edit note ", message = uiState.title)
 
         Scaffold(
             topBar = {
@@ -79,6 +82,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                     },
                     navigationIcon = {
                         IconButton(onClick = {
+                            saveNote(uiState, viewModel)
                             navigator.pop()
                         }) {
                             Icon(
@@ -94,18 +98,22 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                         IconButton(onClick = {
                             uiState.favourite = if (uiState.favourite == 0L) 1L else 0L
                             saveNote(uiState, viewModel)
+                            Napier.d(tag = "Test edit note ", message = uiState.id.toString())
+                            Napier.d(tag = "Test edit note ", message = uiState.title)
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Favorite,
                                 contentDescription = null,
-                                tint = if (uiState.favourite == 1L) colors.error else colors.primaryVariant.copy(alpha = 0.6f)
+                                tint = if (uiState.favourite == 1L) colors.error else colors.primaryVariant.copy(
+                                    alpha = 0.6f
+                                )
                             )
                         }
-//                        IconButton(onClick = {
-//                            showTagDiaLog = true
-//                        }) {
-//                            Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
-//                        }
+                        IconButton(onClick = {
+                            showTagDiaLog = true
+                        }) {
+                            Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
+                        }
                     }
                 )
             }
@@ -124,6 +132,9 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                             uiState.title = newText
                             isHintTitleVisible = newText.isEmpty()
                             saveNote(uiState, viewModel)
+
+                            Napier.d(tag = "Test edit note ", message = uiState.id.toString())
+                            Napier.d(tag = "Test edit note ", message = uiState.title)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -136,7 +147,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                         ),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
-                        )
+                    )
 
                     TransparentHintTextField(
                         text = uiState.description,
@@ -146,6 +157,9 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                             uiState.description = newText
                             isHintDescriptionVisible = newText.isEmpty()
                             saveNote(uiState, viewModel)
+
+                            Napier.d(tag = "Test edit note ", message = uiState.id.toString())
+                            Napier.d(tag = "Test edit note ", message = uiState.description)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -156,74 +170,74 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                         ),
                         singleLine = false,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
-
-                        )
-//                    Text(text = uiState.id.toString())
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-//                AnimatedVisibility(
-//                    visible = showTagDiaLog,
-//                    enter = fadeIn() + slideInVertically(),
-//                    exit = fadeOut() + slideOutVertically()
-//                ) {
+                AnimatedVisibility(
+                    visible = showTagDiaLog,
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically()
+                ) {
 //                    LaunchedEffect(navigator) {
 //                        viewModel.loadTags()
 //                    }
-//                    Box(
-//                        modifier = Modifier
-//                            .offset(y = (450).dp)
-//                            .fillMaxWidth()
-//                            .wrapContentHeight(Alignment.Bottom)
-//                            .padding(16.dp)
-//                            .background(colors.primaryVariant)
-//                    ) {
-//                        Card(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            elevation = 8.dp
-//                        ) {
-//                            Column(
-//                                modifier = Modifier
-//                                    .padding(16.dp)
-//                                    .fillMaxWidth()
-//                            ) {
-//                                Row(
-//                                    modifier = Modifier.fillMaxWidth(),
-//                                    horizontalArrangement = Arrangement.SpaceBetween
-//                                ) {
-//                                    Text(
-//                                        text = "Add Tag",
-//                                        fontSize = 16.sp,
-//                                        fontWeight = FontWeight.Bold,
-//                                        modifier = Modifier.padding(top = 14.dp)
-//                                    )
-//
-//                                    TextButton(
-//                                        onClick = {
-//                                            showTagDiaLog = !showTagDiaLog
-//                                            val note = NoteEntity(
-//                                                uiState.id,
-//                                                uiState.title,
-//                                                uiState.description,
-//                                                uiState.created,
-//                                                uiState.deleteCreated,
-//                                                uiState.favourite,
-//                                                uiState.trash
-//                                            )
-//                                            val tag = TagEntity(
-//                                                uiState.idTag,
-//                                                uiState.nameTag
-//                                            )
+                    Box(
+                        modifier = Modifier
+                            .offset(y = (450).dp)
+                            .fillMaxWidth()
+                            .wrapContentHeight(Alignment.Bottom)
+                            .padding(16.dp)
+                            .background(colors.primaryVariant)
+                    ) {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = 8.dp
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = "Add Tag",
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.padding(top = 14.dp)
+                                    )
+
+                                    TextButton(
+                                        onClick = {
+                                            showTagDiaLog = !showTagDiaLog
+                                            val note = NoteEntity(
+                                                uiState.id,
+                                                uiState.title,
+                                                uiState.description,
+                                                uiState.created,
+                                                uiState.deleteCreated,
+                                                uiState.favourite,
+                                                uiState.trash,
+                                                uiState.tag,
+                                                uiState.folder
+                                            )
+                                            val tag = TagEntity(
+                                                uiState.idTag,
+                                                uiState.nameTag
+                                            )
 //                                            viewModel.insertNoteTag(note = note, tag = tag)
 //                                            viewModel.tagAssociateWithNote(note = note)
-//                                        },
-//                                    ) {
-//                                        Text(
-//                                            "Save", fontSize = 16.sp,
-//                                        )
-//                                    }
-//                                }
-//
+                                        },
+                                    ) {
+                                        Text(
+                                            "Save", fontSize = 16.sp,
+                                        )
+                                    }
+                                }
+
 //                                AnimatedVisibility(
 //                                    visible = tags.isNotEmpty(),
 //                                    enter = fadeIn() + slideInVertically(),
@@ -244,48 +258,47 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
 //                                        }
 //                                    }
 //                                }
-//
-//                                Spacer(modifier = Modifier.padding(16.dp))
-//
-//                                Row(
-//                                    horizontalArrangement = Arrangement.SpaceBetween
-//                                ) {
-//                                    OutlinedTextField(
-//                                        value = uiState.nameTag,
-//                                        onValueChange = { newText ->
-//                                            uiState.nameTag = newText
-//                                        },
-//                                        label = {
-//                                            Text(
-//                                                "Name",
-//                                                style = TextStyle(colors.onPrimary)
-//                                            )
-//                                        },
-//                                        colors = textFieldColors,
-//                                    )
-//
-//                                    Spacer(modifier = Modifier.padding(16.dp))
-//
-//                                    Button(onClick = {
-//                                        val tag = TagEntity(
-//                                            uiState.idTag,
-//                                            uiState.nameTag
-//                                        )
+
+                                Spacer(modifier = Modifier.padding(16.dp))
+
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    OutlinedTextField(
+                                        value = uiState.nameTag,
+                                        onValueChange = { newText ->
+                                            uiState.nameTag = newText
+                                        },
+                                        label = {
+                                            Text(
+                                                "Name",
+                                                style = TextStyle(colors.onPrimary)
+                                            )
+                                        },
+                                        colors = textFieldColors,
+                                    )
+
+                                    Spacer(modifier = Modifier.padding(16.dp))
+
+                                    Button(onClick = {
+                                        val tag = TagEntity(
+                                            uiState.idTag,
+                                            uiState.nameTag
+                                        )
 //                                        viewModel.insertTag(tag = tag)
 //                                        viewModel.loadTags()
-//                                    }) {
-//                                        Icon(
-//                                            imageVector = Icons.Default.Add,
-//                                            contentDescription = null,
-//                                            modifier = Modifier.size(20.dp)
-//                                        )
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Add,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -299,7 +312,9 @@ private fun saveNote(uiState: EditNoteUiState, viewModel: EditNoteViewModel) {
         uiState.created,
         uiState.deleteCreated,
         uiState.favourite,
-        uiState.trash
+        uiState.trash,
+        uiState.tag,
+        uiState.folder
     )
     viewModel.updateNote(note)
 }

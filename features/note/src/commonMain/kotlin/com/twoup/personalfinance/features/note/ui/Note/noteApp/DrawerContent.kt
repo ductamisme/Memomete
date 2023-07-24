@@ -87,7 +87,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
     val colors = MaterialTheme.colors
     val selectedItemIndex by viewModel.selectedItemIndex.collectAsState(0)
     val notes by viewModel.notes.collectAsState()
-    val tags by viewModel.tags.collectAsState()
+//    val tags by viewModel.tags.collectAsState()
 
     val mainNotesCount = notes.count { it.trash == 0L }
     val favoriteNotesCount = notes.count { it.favourite == 1L && it.trash == 0L }
@@ -136,7 +136,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
         DrawerItem(
             icon = Icons.Default.Star,
             text = "Tags",
-            textEnd = tags.size.toString(),
+            textEnd = "0",
             isSelected = selectedItemIndex == DrawerItem.TAGS,
             onClick = {
                 navigator.push(noteTagScreen)

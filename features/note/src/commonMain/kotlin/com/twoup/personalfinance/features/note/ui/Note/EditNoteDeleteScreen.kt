@@ -178,7 +178,9 @@ fun saveNote(uiState: EditNoteDeleteUiState, viewModel: NoteViewModel) {
         uiState.created,
         uiState.deleteCreated,
         uiState.favourite,
-        uiState.trash
+        uiState.trash,
+        uiState.tag,
+        uiState.folder
     )
     viewModel.updateNote(note)
 }

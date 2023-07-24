@@ -133,7 +133,9 @@ class SearchNoteScreen : Screen {
                                     created = note.created,
                                     deleteCreated = note.deleteCreated,
                                     favourite = note.favourite,
-                                    trash = note.trash
+                                    trash = note.trash,
+                                    tag = note.tag,
+                                    folder = note.folder
                                 )
                             )
                         )

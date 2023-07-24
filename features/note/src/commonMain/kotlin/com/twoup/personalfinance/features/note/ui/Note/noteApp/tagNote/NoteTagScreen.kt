@@ -24,7 +24,7 @@ class NoteTagScreen : Screen {
         val addNoteScreen = rememberScreen(SharedScreen.AddNoteScreen)
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
         val notes by viewModel.notes.collectAsState(emptyList())
-        val tags by viewModel.tags.collectAsState(emptyList())
+//        val tags by viewModel.tags.collectAsState(emptyList())
         val showUp by viewModel.showUp.collectAsState()
         val notesFromOldTONew = notes.sortedByDescending { it.created }
         var oldOrNew by remember { mutableStateOf(false) }
@@ -33,7 +33,7 @@ class NoteTagScreen : Screen {
 
         LaunchedEffect(navigator) {
             viewModel.loadNotes()
-            viewModel.loadTags()
+//            viewModel.loadTags()
         }
 
         ModalDrawer(
@@ -61,7 +61,7 @@ class NoteTagScreen : Screen {
                         showUp = showUp,
                         fromNewest = { oldOrNew = false },
                         fromOldest = { oldOrNew = true },
-                        tags = tags
+//                        tags = tags
                     )
                     Napier.d(tag = "Test on show up", message = showUp.toString())
                 }

@@ -5,35 +5,10 @@ CREATE TABLE NoteDatabase (
      created INTEGER NOT NULL,
      deleteCreated INTEGER NOT NULL,
      favorite INTEGER DEFAULT 0 CHECK (favorite IN (0, 1)),
-     trash INTEGER DEFAULT 0 CHECK (trash IN (0, 1))
+     trash INTEGER DEFAULT 0 CHECK (trash IN (0, 1)),
+     tag TEXT NOT NULL,
+     folder TEXT NOT NULL
 );
-
-CREATE TABLE Tag (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
-);
-
-CREATE TABLE Folder (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
-);
-
-CREATE TABLE NoteTag (
-    noteId INTEGER NOT NULL,
-    tagId INTEGER NOT NULL,
-    PRIMARY KEY (noteId, tagId),
-    FOREIGN KEY (noteId) REFERENCES NoteDatabase(id) ON DELETE CASCADE,
-    FOREIGN KEY (tagId) REFERENCES Tag(id) ON DELETE CASCADE
-);
-
-CREATE TABLE NoteFolder (
-    noteId INTEGER NOT NULL,
-    folderId INTEGER NOT NULL,
-    PRIMARY KEY (noteId, folderId),
-    FOREIGN KEY (noteId) REFERENCES NoteDatabase(id) ON DELETE CASCADE,
-    FOREIGN KEY (folderId) REFERENCES Folder(id) ON DELETE CASCADE
-);
-
 
 getAllNote:
 SELECT *
@@ -46,12 +21,13 @@ WHERE id = ?;
 
 updateNote:
 UPDATE NoteDatabase
-SET title = ?, description = ?, created =?, favorite =?, trash =?,deleteCreated =?
+SET title = ?, description = ?, created =?, favorite =?, trash =?,deleteCreated =?,tag = ?, folder =?
 WHERE id = ?;
 
 insertNote:
-INSERT INTO NoteDatabase(title,description, created,deleteCreated)
-VALUES (?,?,?,?);
+INSERT INTO NoteDatabase(title, description, created, deleteCreated,tag,folder)
+VALUES (?, ?, ?, ?, ?,?);
+
 
 deleteNoteById:
 DELETE FROM NoteDatabase
@@ -67,51 +43,3 @@ WHERE id = ? AND trash = 1;
 
 deleteAllNote:
 DELETE FROM NoteDatabase;
-
-getAllTags:
-SELECT *
-FROM Tag;
-
-getAllFolders:
-SELECT *
-FROM Folder;
-
-getTagsAssociatedWithASpecificNote:
-SELECT Tag.*
-FROM Tag
-JOIN NoteTag ON Tag.id = NoteTag.tagId
--- WHERE NoteTag.noteId = ?;
-WHERE NoteTag.noteId = :noteId;
-
-getFoldersAssociatedWithASpecificNote:
-SELECT Folder.*
-FROM Folder
-JOIN NoteFolder ON Folder.id = NoteFolder.folderId
--- WHERE NoteFolder.noteId = ?;
-WHERE NoteFolder.noteId = :noteId;
-
-insertANewTag:
-INSERT INTO Tag(name)
-VALUES (?);
-
-insertANewFolder:
-INSERT INTO Folder(name)
-VALUES (?);
-
-associateATagWithASpecificNote:
-INSERT INTO NoteTag(noteId, tagId)
-VALUES (?, ?);
-
-associateAFolderWithASpecificNote:
-INSERT INTO NoteFolder(noteId, folderId)
-VALUES (?, ?);
-
-removeTagAssociationFromANote:
-DELETE FROM NoteTag
-WHERE noteId = ? AND tagId = ?;
-
-removeFolderAssociationFromANote:
-DELETE FROM NoteFolder
-WHERE noteId = ? AND folderId = ?;
-
-

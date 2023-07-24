@@ -16,18 +16,18 @@ interface NoteLocalDataSource {
     suspend fun updateNote(note: NoteEntity)
 
     // TagEntity related methods
-    suspend fun getAllTags(): List<TagEntity>
-    suspend fun getTagsAssociatedWithASpecificNote(noteId: Long): List<TagEntity>
-    suspend fun insertANewTag(tag: TagEntity)
-
-    // FolderEntity related methods
-    suspend fun getAllFolders(): List<FolderEntity>
-    suspend fun getFoldersAssociatedWithASpecificNote(noteId: Long): List<FolderEntity>
-    suspend fun insertANewFolder(folder: FolderEntity)
-
-    // NoteTagEntity and NoteFolderEntity related methods
-    suspend fun associateATagWithASpecificNote(noteId: Long, tagId: Long)
-    suspend fun associateAFolderWithASpecificNote(noteId: Long, folderId: Long)
-    suspend fun removeTagAssociationFromANote(noteId: Long, tagId: Long)
-    suspend fun removeFolderAssociationFromANote(noteId: Long, folderId: Long)
+//    suspend fun getAllTags(): List<TagEntity>
+//    suspend fun getTagsAssociatedWithASpecificNote(noteId: Long): List<TagEntity>
+//    suspend fun insertANewTag(tag: TagEntity)
+//
+//    // FolderEntity related methods
+//    suspend fun getAllFolders(): List<FolderEntity>
+//    suspend fun getFoldersAssociatedWithASpecificNote(noteId: Long): List<FolderEntity>
+//    suspend fun insertANewFolder(folder: FolderEntity)
+//
+//    // NoteTagEntity and NoteFolderEntity related methods
+//    suspend fun associateATagWithASpecificNote(noteId: Long, tagId: Long)
+//    suspend fun associateAFolderWithASpecificNote(noteId: Long, folderId: Long)
+//    suspend fun removeTagAssociationFromANote(noteId: Long, tagId: Long)
+//    suspend fun removeFolderAssociationFromANote(noteId: Long, folderId: Long)
 }

@@ -12,11 +12,13 @@ data class NoteDto(
     val title: String,
     var description: String,
     val created: LocalDateTime,
-    val deleteCreated: LocalDateTime,
+    var deleteCreated: LocalDateTime,
     var favourite: Long?,
-    var trash: Long?
+    var trash: Long?,
+    val tag: String,
+    var folder: String,
 ) : Dto {
     override fun mapToDomainModel(): NoteModel {
-        return NoteModel(id, title, description, created,deleteCreated, favourite, trash,)
+        return NoteModel(id, title, description, created,deleteCreated, favourite, trash,tag, folder)
     }
 }

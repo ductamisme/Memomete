@@ -23,6 +23,8 @@ class UseCaseUpdateNote(private val dataSource: NoteLocalDataSource) {
                         note.deleteCreated,
                         note.favourite,
                         note.trash,
+                        note.tag,
+                        note.folder
                     )
                 )
             }

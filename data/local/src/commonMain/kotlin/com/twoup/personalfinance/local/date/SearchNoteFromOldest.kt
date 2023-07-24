@@ -30,19 +30,17 @@ class SearchNoteFromNewest {
 }
 
 
-class SearchNoteDeleteFromNewest {
-    fun execute(notes: List<NoteDeleteEntity>, query: String): List<NoteDeleteEntity> {
-        if(query.isBlank()) {
+class FilterTagNotes {
+    fun execute(notes: List<NoteEntity>, tag: String): List<NoteEntity> {
+        if (tag.isBlank()) {
             return notes
         }
         return notes.filter {
-            it.title.trim().lowercase().contains(query.lowercase()) ||
-                    it.description.trim().lowercase().contains(query.lowercase())
-        }.sortedBy {
-            DateTimeUtil.toEpochMillis(it.created)
+            it.title.contains(tag, ignoreCase = true)
         }
     }
 }
+
 
 class SearchNoteDeleteFromOldest {
     fun execute(notes: List<NoteDeleteEntity>, query: String): List<NoteDeleteEntity> {

@@ -15,21 +15,6 @@ class EditNoteDeleteUiState(note: NoteEntity) {
     var deleteCreated by mutableStateOf(note.deleteCreated)
     var favourite by mutableStateOf(note.favourite )
     var trash by mutableStateOf(note.trash )
-
-    fun updateId(newId: Long) {
-        id = newId
-    }
-
-    fun updateTitle(newTitle: String) {
-        title = newTitle
-    }
-
-    fun updateDescription(newDescription: String) {
-        description = newDescription
-    }
-
-    fun updateCreate() {
-//        created = newIsCompleted
-    }
-
+    var tag by mutableStateOf(note.tag)
+    var folder by mutableStateOf(note.folder)
 }

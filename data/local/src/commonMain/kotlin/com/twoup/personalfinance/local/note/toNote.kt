@@ -13,7 +13,9 @@ fun NoteDatabase.toNote(): NoteEntity{
         created = Instant.fromEpochMilliseconds(created).toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()),
         favourite = favorite,
         trash = trash,
-        deleteCreated = Instant.fromEpochMilliseconds(created).toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault())
+        deleteCreated = Instant.fromEpochMilliseconds(created).toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()),
+        tag = tag,
+        folder = folder
     )
 }
 

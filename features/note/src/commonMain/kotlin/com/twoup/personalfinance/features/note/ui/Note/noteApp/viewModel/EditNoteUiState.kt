@@ -8,7 +8,11 @@ import com.twoup.personalfinance.model.note.local.NoteEntity
 import com.twoup.personalfinance.model.note.local.TagEntity
 import kotlinx.datetime.LocalDateTime
 
-class EditNoteUiState(note : NoteEntity) {
+class EditNoteUiState(
+    note : NoteEntity,
+    idTag: Long = 0L,
+    nameTag: String = "",
+) {
 
     var id by mutableStateOf(note.id)
     var title by mutableStateOf(note.title)
@@ -17,8 +21,10 @@ class EditNoteUiState(note : NoteEntity) {
     var deleteCreated by mutableStateOf(note.deleteCreated)
     var favourite by mutableStateOf(note.favourite ) // Use default value if favourite is null
     var trash by mutableStateOf(note.trash )
-//    var idTag by mutableStateOf(tag.id)
-//    var nameTag by mutableStateOf(tag.name)
+    var tag by mutableStateOf(note.tag)
+    var folder by mutableStateOf(note.folder)
+    var idTag by mutableStateOf(idTag)
+    var nameTag by mutableStateOf(nameTag)
 }
 
 //class EditNoteUiState (

@@ -12,15 +12,17 @@ data class NoteModel(
     val title: String,
     var description: String,
     val created: LocalDateTime,
-    val deleteCreated: LocalDateTime,
+    var deleteCreated: LocalDateTime,
     var favourite: Long?,
-    var trash: Long?
+    var trash: Long?,
+    val tag: String,
+    var folder: String,
 ) : Model {
     override fun toLocalDto(): NoteEntity {
-        return NoteEntity(id, title, description, created,deleteCreated, favourite, trash)
+        return NoteEntity(id, title, description, created,deleteCreated, favourite, trash,tag, folder)
     }
 
     override fun toRemoteDto(): NoteDto {
-        return NoteDto(id, title, description, created,deleteCreated, favourite, trash)
+        return NoteDto(id, title, description, created,deleteCreated, favourite, trash, tag, folder)
     }
 }

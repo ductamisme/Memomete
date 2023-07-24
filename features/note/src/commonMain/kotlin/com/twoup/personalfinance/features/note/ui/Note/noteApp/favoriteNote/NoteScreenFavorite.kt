@@ -36,7 +36,7 @@ class NoteScreenFavorite : Screen {
         val viewModel = rememberScreenModel { NoteViewModel() }
         val navigator = LocalNavigator.currentOrThrow
         val searchScreen = rememberScreen(SharedScreen.SearchNote)
-        val addNoteScreen = rememberScreen(SharedScreen.AddNoteScreen)
+//        val addNoteScreen = rememberScreen(SharedScreen.AddNoteScreen)
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
         var oldOrNew by remember { mutableStateOf(false) }
         val notes by viewModel.notes.collectAsState(emptyList())

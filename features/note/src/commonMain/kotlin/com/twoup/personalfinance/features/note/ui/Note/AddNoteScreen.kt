@@ -15,10 +15,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,12 +45,15 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.CustomTextButton
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AddNoteViewModel
+import com.twoup.personalfinance.features.people.ui.icons.Add
 import com.twoup.personalfinance.model.note.local.NoteEntity
-import com.twoup.personalfinance.model.note.local.TagEntity
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.channels.BufferOverflow
+import org.koin.dsl.module
 
-class AddNoteScreen : Screen {
+class AddNoteScreen() : Screen {
     @Composable
     override fun Content() {
         AddScreen()
@@ -55,14 +62,28 @@ class AddNoteScreen : Screen {
     @Composable
     fun AddScreen() {
         val viewModel = rememberScreenModel { AddNoteViewModel() }
-        val tags by viewModel.tags.collectAsState()
+        val tags by viewModel.notes.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
         val noteScreen = rememberScreen(SharedScreen.NoteScreen)
         val uiState = remember { AddNoteUiState() }
         val scrollState = rememberScrollState()
         var isHintTitleVisible by remember { mutableStateOf(uiState.title.isEmpty()) }
         var isHintDescriptionVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
+        var isHintTagVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
         var showTagDiaLog by remember { mutableStateOf(false) }
+        var isSelected by remember { mutableStateOf(false) }
+
+        val note = NoteEntity(
+            uiState.id,
+            uiState.title,
+            uiState.description,
+            uiState.created,
+            uiState.deleteCreated,
+            uiState.favourite,
+            uiState.trash,
+            uiState.tag,
+            uiState.folder
+        )
 
         val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
             cursorColor = Color.Black,
@@ -83,18 +104,11 @@ class AddNoteScreen : Screen {
                     },
                     navigationIcon = {
                         IconButton(onClick = {
-                            val note = NoteEntity(
-                                uiState.id,
-                                uiState.title,
-                                uiState.description,
-                                uiState.created,
-                                uiState.deleteCreated,
-                                uiState.favourite,
-                                uiState.trash
-                            )
                             Napier.d(tag = "Test add note", message = uiState.favourite.toString())
                             viewModel.insertNote(note)
                             navigator.push(noteScreen)
+                            Napier.d(tag = "Test edit note ", message = uiState.id.toString())
+                            Napier.d(tag = "Test edit note ", message = uiState.title)
                         }) {
                             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                         }
@@ -128,6 +142,8 @@ class AddNoteScreen : Screen {
                         onValueChanged = { newText ->
                             uiState.title = newText
                             isHintTitleVisible = newText.isEmpty()
+                            Napier.d(tag = "Test edit note ", message = uiState.id.toString())
+                            Napier.d(tag = "Test edit note ", message = uiState.title)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -149,6 +165,8 @@ class AddNoteScreen : Screen {
                         onValueChanged = { newText ->
                             uiState.description = newText
                             isHintDescriptionVisible = newText.isEmpty()
+                            Napier.d(tag = "Test edit note ", message = uiState.id.toString())
+                            Napier.d(tag = "Test edit note ", message = uiState.description)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -173,7 +191,7 @@ class AddNoteScreen : Screen {
                 }
                 Box(
                     modifier = Modifier
-                        .offset(y = (450).dp)
+                        .offset(y = (400).dp)
                         .fillMaxWidth()
                         .wrapContentHeight(Alignment.Bottom)
                         .padding(16.dp)
@@ -202,21 +220,6 @@ class AddNoteScreen : Screen {
                                 TextButton(
                                     onClick = {
                                         showTagDiaLog = !showTagDiaLog
-                                        val note = NoteEntity(
-                                            uiState.id,
-                                            uiState.title,
-                                            uiState.description,
-                                            uiState.created,
-                                            uiState.deleteCreated,
-                                            uiState.favourite,
-                                            uiState.trash
-                                        )
-                                        val tag = TagEntity(
-                                            uiState.idTag,
-                                            uiState.nameTag
-                                        )
-                                        viewModel.insertNoteTag(note = note, tag = tag)
-                                        viewModel.tagAssociateWithNote(note = note)
                                     },
                                 ) {
                                     Text(
@@ -230,54 +233,69 @@ class AddNoteScreen : Screen {
                                 enter = fadeIn() + slideInVertically(),
                                 exit = fadeOut() + slideOutVertically()
                             ) {
-                                Column(modifier = Modifier.height(100.dp)) {
-                                    LazyVerticalGrid(
-                                        columns = GridCells.Adaptive(100.dp),
-                                        modifier = Modifier.fillMaxWidth(),
-                                        verticalArrangement = Arrangement.spacedBy(20.dp),
-                                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                                    ) {
-                                        items(tags) { tag ->
-                                            Text(text = tag.name)
-//                                            Text(text = note)
-
-                                        }
+                                LazyVerticalGrid(
+                                    columns = GridCells.Adaptive(minSize = 100.dp),
+                                    modifier = Modifier.fillMaxWidth().height(100.dp),
+                                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    items(tags) { tag ->
+                                        CustomTextButton(
+                                            onClick = {},
+                                            text = tag.tag,
+                                            modifier = Modifier,
+                                            onDeleteClick = {
+                                                tag.tag = ""
+                                                viewModel.loadTags()
+                                            }
+                                        )
                                     }
                                 }
                             }
                             Spacer(modifier = Modifier.padding(16.dp))
 
                             Row(
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.padding(4.dp)
                             ) {
-                                OutlinedTextField(
-                                    value = uiState.nameTag,
-                                    onValueChange = { newText ->
-                                        uiState.nameTag = newText
-                                    },
-                                    label = {
-                                        Text(
-                                            "Name",
-                                            style = TextStyle(MaterialTheme.colors.onPrimary)
+                                TransparentHintTextField(
+                                    text = uiState.tag,
+                                    hint = "Enter tag",
+                                    isHintVisible = isHintTagVisible,
+                                    onValueChanged = { newText ->
+                                        uiState.tag = newText
+                                        isHintTagVisible = newText.isEmpty()
+                                        Napier.d(
+                                            tag = "Test edit note ",
+                                            message = uiState.id.toString()
+                                        )
+                                        Napier.d(
+                                            tag = "Test edit note ",
+                                            message = uiState.description
                                         )
                                     },
-                                    colors = textFieldColors,
+                                    modifier = Modifier.width(300.dp),
+//                                        .padding(16.dp)
+                                    textStyle = TextStyle(
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colors.onPrimary
+                                    ),
+                                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+                                    singleLine = true
                                 )
-
-                                Spacer(modifier = Modifier.padding(16.dp))
-
-                                Button(onClick = {
-                                    val tag = TagEntity(
-                                        uiState.idTag,
-                                        uiState.nameTag
-                                    )
-                                    viewModel.insertTag(tag = tag)
-                                    viewModel.loadTags()
-                                }) {
+                                IconButton(
+                                    onClick = {
+                                        viewModel.updateNote(note.copy(tag = uiState.tag))
+                                        viewModel.loadTags()
+                                        isSelected = !isSelected
+                                    },
+                                    modifier = Modifier.size(24.dp)
+                                ) {
                                     Icon(
-                                        imageVector = Icons.Default.Add,
+                                        imageVector = Icons.Default.Star,
                                         contentDescription = null,
-                                        modifier = Modifier.size(20.dp)
+                                        tint = if (isSelected) colors.primary else colors.primaryVariant.copy(alpha = 0.6f),
+                                        modifier = Modifier.size(24.dp)
                                     )
                                 }
                             }

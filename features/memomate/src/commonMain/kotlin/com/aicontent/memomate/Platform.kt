@@ -1,7 +1,0 @@
-//package com.aicontent.memomate
-//
-//interface Platform {
-//    val name: String
-//}
-//
-//expect fun getPlatform(): Platform

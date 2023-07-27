@@ -147,7 +147,7 @@ android {
     val androidCompileSdk: String by project
     val androidTargetSdk: String by project
 
-    namespace = "com.twoup.personalfinance.common"
+    namespace = "com.aicontent.memomate.common"
     compileSdk = androidCompileSdk.toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res", "src/commonMain/resources")
@@ -160,7 +160,7 @@ android {
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "com.twoup.personalfinance"
+    multiplatformResourcesPackage = "com.aicontent.memomate"
     multiplatformResourcesClassName = "SharedMR"
 }
 

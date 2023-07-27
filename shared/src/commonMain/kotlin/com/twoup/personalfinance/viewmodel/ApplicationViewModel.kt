@@ -1,11 +1,10 @@
 package com.twoup.personalfinance.viewmodel
 
-import com.twoup.personalfinance.features.people.viewmodel.settings.SettingsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.brightify.hyperdrive.multiplatformx.BaseViewModel
 
-class ApplicationViewModel(settingsFactory: SettingsViewModel.Factory,) : BaseViewModel(){
-    val settings by managed(settingsFactory.create())
+class ApplicationViewModel() : BaseViewModel(){
+//    val settings by managed(settingsFactory.create())
 
     val tabs = listOf(Tab.Schedule, Tab.MyAgenda, Tab.Sponsors, Tab.Settings)
     var selectedTab: Tab by published(Tab.Schedule)

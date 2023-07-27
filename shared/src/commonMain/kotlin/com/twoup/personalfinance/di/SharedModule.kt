@@ -1,10 +1,8 @@
 package com.twoup.personalfinance.di
 
 import cafe.adriel.voyager.core.registry.ScreenRegistry
-import com.twoup.personalfinance.domain.di.domainModule
 import com.twoup.personalfinance.features.note.di.featureNoteModule
 import com.twoup.personalfinance.features.note.di.noteModule
-import com.twoup.personalfinance.features.people.di.featurePeopleModule
 import com.twoup.personalfinance.local.di.databaseModule
 import com.twoup.personalfinance.local.di.localModule
 import com.twoup.personalfinance.remote.di.remoteModule
@@ -21,9 +19,9 @@ fun initKoin(enableNetworkLogs: Boolean = true, appDeclaration: KoinAppDeclarati
             databaseModule(),
             localModule(),
             remoteModule("https://swapi.dev/api/", enableNetworkLogs),
-            domainModule(),
+//            domainModule(),
             sharedModule,
-            featurePeopleModule,
+//            featurePeopleModule,
             featureNoteModule,
 
         )
@@ -35,7 +33,7 @@ fun initKoin(enableNetworkLogs: Boolean = true, appDeclaration: KoinAppDeclarati
 val sharedModule = module {
     single {
         ApplicationViewModel(
-            settingsFactory = get()
+//            settingsFactory = get()
         )
     }
     ScreenRegistry {

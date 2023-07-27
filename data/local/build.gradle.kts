@@ -74,7 +74,7 @@ android {
     val androidCompileSdk: String by project
     val androidTargetSdk: String by project
 
-    namespace = "com.twoup.personalfinance.local"
+    namespace = "com.aicontent.local"
     compileSdk = androidCompileSdk.toInt()
     defaultConfig {
         minSdk = androidMinSdk.toInt()
@@ -84,7 +84,7 @@ android {
 
 sqldelight {
     database("NoteDatabase") {
-        packageName = "com.twoup.personalfinance.database"
+        packageName = "com.aicontent.database"
         sourceFolders = listOf("sqldelight")
     }
 }

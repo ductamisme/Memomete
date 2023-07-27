@@ -2,6 +2,7 @@ package com.twoup.personalfinance.features.note.ui.Note.noteApp.trashNote
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
@@ -28,14 +30,14 @@ fun ItemNoteTrash(
     onNoteClick: () -> Unit,
     onNoteDelete: () -> Unit,
     onShowUp: Boolean,
-    showDialog:() -> Unit,
+    showDialog: () -> Unit,
     viewModel: NoteViewModel
 ) {
-    val formattedDate = remember(noteEntity.created) {
-        DateTimeUtil.formatNoteDate(noteEntity.created)
+    val formattedDate = remember(noteEntity.deleteCreated) {
+        DateTimeUtil.formatNoteDate(noteEntity.deleteCreated)
     }
 
-//    var showDeleteConfirmation by remember { mutableStateOf(false) }
+    val countDown = DateTimeUtil.countDownDays(noteEntity.deleteCreated)
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -45,20 +47,37 @@ fun ItemNoteTrash(
             shape = RoundedCornerShape(8.dp),
             elevation = 4.dp,
             backgroundColor = MaterialTheme.colors.secondary,
-//            border = BorderStroke(1.dp, Color.LightGray),
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .clickable(onClick = onNoteClick)
                 .fillMaxWidth()
                 .height(250.dp)
         ) {
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text(
-                    text = noteEntity.description,
-                    fontSize = 12.sp,
-                    fontStyle = FontStyle.Normal,
-                    color = Color.Black
-                )
+            Column() {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    Text(
+                        text = noteEntity.description,
+                        fontSize = 12.sp,
+                        fontStyle = FontStyle.Normal,
+                        color = Color.Black
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(20.dp),
+                    color = Color.DarkGray
+                ) {
+                    Text(
+                        text = "$countDown days",
+                        modifier = Modifier.fillMaxSize(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.caption,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
             AnimatedVisibility(
                 visible = onShowUp,
@@ -92,7 +111,8 @@ fun ItemNoteTrash(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = Color.Black
                         )
                     }
                 }

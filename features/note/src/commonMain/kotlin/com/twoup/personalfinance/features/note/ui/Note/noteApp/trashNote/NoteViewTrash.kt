@@ -56,7 +56,7 @@ fun NoteViewTrash(
 
     LaunchedEffect(navigator) {
         viewModel.loadNotes()
-//        selectedNote?.id?.let { viewModel.deleteNoteBy30Days(it, selectedNote!!.created) }
+
     }
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
@@ -83,7 +83,6 @@ fun NoteViewTrash(
                             Icon(
                                 imageVector = Icons.Default.Info,
                                 contentDescription = "Info",
-//                                tint = colors.primaryVariant,
                                 tint = if (showTakeNote) colors.primary else colors.primaryVariant.copy(alpha = 0.6f),
                                 modifier = Modifier.size(24.dp)
                             )

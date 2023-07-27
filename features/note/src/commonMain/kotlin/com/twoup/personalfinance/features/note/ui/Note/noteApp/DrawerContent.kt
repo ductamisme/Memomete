@@ -87,12 +87,11 @@ fun DrawerContent(viewModel: NoteViewModel) {
     val colors = MaterialTheme.colors
     val selectedItemIndex by viewModel.selectedItemIndex.collectAsState(0)
     val notes by viewModel.notes.collectAsState()
-//    val tags by viewModel.tags.collectAsState()
 
     val mainNotesCount = notes.count { it.trash == 0L }
     val favoriteNotesCount = notes.count { it.favourite == 1L && it.trash == 0L }
     val trashNotesCount = notes.count { it.trash == 1L }
-//    val tagNotesCount = tags.count {  }
+    val folderNotesCount = notes.map{ it.folder }.distinct()
 
     val navigator = LocalNavigator.currentOrThrow
     val noteScreen = rememberScreen(SharedScreen.NoteScreen)
@@ -136,7 +135,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
         DrawerItem(
             icon = Icons.Default.Star,
             text = "Tags",
-            textEnd = "0",
+            textEnd ="0",
             isSelected = selectedItemIndex == DrawerItem.TAGS,
             onClick = {
                 navigator.push(noteTagScreen)
@@ -159,7 +158,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
             icon = Icons.Default.Create,
             text = "Folders",
             isSelected = selectedItemIndex == DrawerItem.FOLDERS,
-            textEnd = "0",
+            textEnd = folderNotesCount.size.toString(),
             onClick = {
                 navigator.push(noteFolderScreen)
                 viewModel.setSelectedItemIndex(DrawerItem.FOLDERS)

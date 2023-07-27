@@ -5,22 +5,22 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AddNoteUiState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -29,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,13 +46,11 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.twoup.personalfinance.features.note.ui.Note.navigation.SharedScreen
+import com.twoup.personalfinance.features.note.ui.Note.noteApp.CustomItem
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.CustomTextButton
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AddNoteViewModel
-import com.twoup.personalfinance.features.people.ui.icons.Add
 import com.twoup.personalfinance.model.note.local.NoteEntity
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.channels.BufferOverflow
-import org.koin.dsl.module
 
 class AddNoteScreen() : Screen {
     @Composable
@@ -62,16 +61,18 @@ class AddNoteScreen() : Screen {
     @Composable
     fun AddScreen() {
         val viewModel = rememberScreenModel { AddNoteViewModel() }
-        val tags by viewModel.notes.collectAsState()
+        val folder by viewModel.folders.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
         val noteScreen = rememberScreen(SharedScreen.NoteScreen)
         val uiState = remember { AddNoteUiState() }
         val scrollState = rememberScrollState()
         var isHintTitleVisible by remember { mutableStateOf(uiState.title.isEmpty()) }
         var isHintDescriptionVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
-        var isHintTagVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
         var showTagDiaLog by remember { mutableStateOf(false) }
-        var isSelected by remember { mutableStateOf(false) }
+        val isHintTagVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
+        val uniqueFolders = folder.map { it.folder }.distinct()
+        val currentlySelectedTag = remember { mutableStateOf("") }
+        val uniqueFoldersState = rememberUpdatedState(uniqueFolders)
 
         val note = NoteEntity(
             uiState.id,
@@ -83,12 +84,6 @@ class AddNoteScreen() : Screen {
             uiState.trash,
             uiState.tag,
             uiState.folder
-        )
-
-        val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-            cursorColor = Color.Black,
-            focusedBorderColor = Color.Black,
-            focusedLabelColor = Color.Black,
         )
 
         Scaffold(
@@ -113,7 +108,7 @@ class AddNoteScreen() : Screen {
                             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                         }
                     },
-                    backgroundColor = MaterialTheme.colors.primary,
+                    backgroundColor = colors.primary,
                     elevation = AppBarDefaults.TopAppBarElevation,
                     actions = {
                         IconButton(onClick = {
@@ -152,7 +147,7 @@ class AddNoteScreen() : Screen {
                             fontSize = 24.sp,
                             fontStyle = FontStyle.Normal,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onPrimary
+                            color = colors.onPrimary
                         ),
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                         singleLine = true,
@@ -173,7 +168,7 @@ class AddNoteScreen() : Screen {
                             .padding(16.dp),
                         textStyle = TextStyle(
                             fontSize = 16.sp,
-                            color = MaterialTheme.colors.onPrimary
+                            color = colors.onPrimary
                         ),
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                         singleLine = false
@@ -181,13 +176,14 @@ class AddNoteScreen() : Screen {
 
                 }
             }
+
             AnimatedVisibility(
                 visible = showTagDiaLog,
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically()
             ) {
                 LaunchedEffect(navigator) {
-                    viewModel.loadTags()
+                    viewModel.loadFolder()
                 }
                 Box(
                     modifier = Modifier
@@ -195,7 +191,7 @@ class AddNoteScreen() : Screen {
                         .fillMaxWidth()
                         .wrapContentHeight(Alignment.Bottom)
                         .padding(16.dp)
-                        .background(MaterialTheme.colors.primaryVariant)
+                        .background(colors.primaryVariant)
                 ) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -211,7 +207,7 @@ class AddNoteScreen() : Screen {
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "Add Tag",
+                                    text = "Add Folder",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier.padding(top = 14.dp)
@@ -220,6 +216,10 @@ class AddNoteScreen() : Screen {
                                 TextButton(
                                     onClick = {
                                         showTagDiaLog = !showTagDiaLog
+//                                            viewModel.loadFolder()
+                                        viewModel.updateNote(note.copy(tag = uiState.tag))
+                                        viewModel.loadFolder()
+
                                     },
                                 ) {
                                     Text(
@@ -229,7 +229,7 @@ class AddNoteScreen() : Screen {
                             }
 
                             AnimatedVisibility(
-                                visible = tags.isNotEmpty(),
+                                visible = folder.isNotEmpty(),
                                 enter = fadeIn() + slideInVertically(),
                                 exit = fadeOut() + slideOutVertically()
                             ) {
@@ -239,65 +239,58 @@ class AddNoteScreen() : Screen {
                                     verticalArrangement = Arrangement.spacedBy(20.dp),
                                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
-                                    items(tags) { tag ->
+                                    itemsIndexed(uniqueFoldersState.value) { index, buttonTitle ->
+                                        val isPressed = buttonTitle == currentlySelectedTag.value
                                         CustomTextButton(
-                                            onClick = {},
-                                            text = tag.tag,
-                                            modifier = Modifier,
-                                            onDeleteClick = {
-                                                tag.tag = ""
-                                                viewModel.loadTags()
-                                            }
+                                            text = buttonTitle,
+                                            onClick = { clickedTitle ->
+                                                if (currentlySelectedTag.value == clickedTitle) {
+                                                    // Deselect the button if it was already selected
+                                                    currentlySelectedTag.value = ""
+                                                } else {
+                                                    // Select the button if it was not already selected
+                                                    currentlySelectedTag.value = clickedTitle
+                                                }
+                                                // Perform the desired action when the button is clicked
+                                                // (e.g., navigate to a new screen or perform some action)
+                                            },
+                                            isPressed = isPressed // Pass the pressed state to the button
                                         )
                                     }
                                 }
                             }
+
                             Spacer(modifier = Modifier.padding(16.dp))
 
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 modifier = Modifier.padding(4.dp)
                             ) {
-                                TransparentHintTextField(
-                                    text = uiState.tag,
-                                    hint = "Enter tag",
+                                TransparentHintTextFieldDialog(
+                                    text = currentlySelectedTag.value.ifEmpty { uiState.folder },
+//                                    hint = "",
                                     isHintVisible = isHintTagVisible,
                                     onValueChanged = { newText ->
-                                        uiState.tag = newText
-                                        isHintTagVisible = newText.isEmpty()
-                                        Napier.d(
-                                            tag = "Test edit note ",
-                                            message = uiState.id.toString()
-                                        )
-                                        Napier.d(
-                                            tag = "Test edit note ",
-                                            message = uiState.description
-                                        )
+                                        uiState.folder = currentlySelectedTag.value.ifEmpty {
+                                            newText
+                                        }
+//                                            isHintTagVisible = newText.isEmpty()
                                     },
                                     modifier = Modifier.width(300.dp),
-//                                        .padding(16.dp)
                                     textStyle = TextStyle(
                                         fontSize = 16.sp,
-                                        color = MaterialTheme.colors.onPrimary
+                                        color = colors.onPrimary
                                     ),
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                                     singleLine = true
                                 )
-                                IconButton(
+
+                                CustomItem(
                                     onClick = {
-                                        viewModel.updateNote(note.copy(tag = uiState.tag))
-                                        viewModel.loadTags()
-                                        isSelected = !isSelected
+                                        viewModel.updateNote(note.copy(folder = uiState.folder))
+                                        viewModel.loadFolder()
                                     },
-                                    modifier = Modifier.size(24.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Star,
-                                        contentDescription = null,
-                                        tint = if (isSelected) colors.primary else colors.primaryVariant.copy(alpha = 0.6f),
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                }
+                                )
                             }
                         }
                     }

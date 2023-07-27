@@ -53,3 +53,39 @@ fun TransparentHintTextField(
         }
     }
 }
+@Composable
+fun TransparentHintTextFieldDialog(
+    text: String,
+//    hint: String,
+    isHintVisible: Boolean,
+    onValueChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = TextStyle(),
+    singleLine: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+//    keyboardAction: KeyboardAction = KeyboardAction.Default,
+) {
+    Box(modifier = modifier) {
+        BasicTextField(
+            value = text,
+            onValueChange = onValueChanged,
+            singleLine = singleLine,
+            textStyle = textStyle,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { state ->
+                },
+            keyboardOptions = keyboardOptions,
+//            keyboardAction = KeyboardActions.Default.onSend
+        )
+//        if (isHintVisible) {
+//            Text(
+//                text = hint,
+//                style = textStyle.merge(
+//                    TextStyle(color = Color.DarkGray)
+//                ),
+//                modifier = Modifier.padding(start = 4.dp) // Add some padding to the hint text
+//            )
+//        }
+    }
+}

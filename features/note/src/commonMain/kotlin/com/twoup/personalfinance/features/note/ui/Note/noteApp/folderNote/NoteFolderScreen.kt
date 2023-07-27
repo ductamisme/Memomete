@@ -25,7 +25,6 @@ class NoteFolderScreen : Screen {
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
         val notes by viewModel.notes.collectAsState(emptyList())
         val showUp by viewModel.showUp.collectAsState()
-//        var showUp = remember { MutableStateFlow(false) }
         val notesFromOldTONew = notes.sortedByDescending { it.created }
         var oldOrNew by remember { mutableStateOf(false) }
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -53,19 +52,19 @@ class NoteFolderScreen : Screen {
                         )
                     },
                     backgroundColor = MaterialTheme.colors.background,
-                    floatingActionButton = {
-                        FloatingActionButton(
-                            onClick = { navigator.push(addNoteScreen) },
-                            backgroundColor = MaterialTheme.colors.primary,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "Add",
-                                tint = MaterialTheme.colors.onPrimary
-                            )
-                        }
-                    },
-                    floatingActionButtonPosition = FabPosition.End
+//                    floatingActionButton = {
+//                        FloatingActionButton(
+//                            onClick = { navigator.push(addNoteScreen) },
+//                            backgroundColor = MaterialTheme.colors.primary,
+//                        ) {
+//                            Icon(
+//                                imageVector = Icons.Default.Add,
+//                                contentDescription = "Add",
+//                                tint = MaterialTheme.colors.onPrimary
+//                            )
+//                        }
+//                    },
+//                    floatingActionButtonPosition = FabPosition.End
                 ) {
                     NoteFolderViews(
                         notes = if (oldOrNew) notes else notesFromOldTONew, viewModel = viewModel,

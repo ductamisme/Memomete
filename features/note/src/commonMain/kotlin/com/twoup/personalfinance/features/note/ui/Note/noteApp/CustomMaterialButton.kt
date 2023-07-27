@@ -32,13 +32,57 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.NoteViewModel
+import com.twoup.personalfinance.features.people.ui.icons.Add
 import kotlin.math.roundToInt
 
 @Composable
 fun CustomTextButton(
-    onClick: (String) -> Unit, // Pass a lambda function to receive the clicked tag title
-    onDeleteClick:(String)  -> Unit,
     text: String,
+    onClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    shape: RoundedCornerShape = RoundedCornerShape(16.dp),
+    backgroundColor: Color = Color.White,
+    contentColor: Color = Color.Black,
+    borderColor: Color = Color.LightGray,
+    pressedBackgroundColor: Color = Color.Black,
+    pressedContentColor: Color = Color.White,
+    pressedBorderColor: Color = Color.Black,
+    fontSize: TextUnit = MaterialTheme.typography.subtitle1.fontSize,
+    isPressed: Boolean // New parameter to indicate pressed state
+) {
+    BoxWithConstraints(
+        modifier = modifier
+            .background(
+                color = if (isPressed) pressedBackgroundColor else backgroundColor,
+                shape = shape
+            )
+            .border(
+                width = 2.dp,
+                color = if (isPressed) pressedBorderColor else borderColor,
+                shape = shape
+            )
+            .clickable {
+                onClick(text)
+            }
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+    ) {
+        Text(
+            text = "# $text",
+            fontSize = fontSize,
+            fontWeight = FontWeight.Bold,
+            color = if (isPressed) pressedContentColor else contentColor,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+
+
+@Composable
+fun CustomItem(
+    onClick: () -> Unit, // Pass a lambda function to receive the clicked tag title
+//    onDeleteClick:(String)  -> Unit,
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(16.dp),
     backgroundColor: Color = Color.White,
@@ -62,31 +106,16 @@ fun CustomTextButton(
                 shape = shape
             )
             .clickable {
-                onClick(text) // Pass the clicked tag title to the onClick lambda
-//                viewModel.changeColorButton()
+                onClick() // Pass the clicked tag title to the onClick lambda
                 isPressed.value = !isPressed.value
             }
             .padding(horizontal = 12.dp, vertical = 8.dp),
     ) {
-        Row() {
-            Text(
-                text = "# $text",
-                fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                fontWeight = FontWeight.Bold,
-                color = if (isPressed.value) pressedContentColor else contentColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            IconButton(
-                onClick = { onDeleteClick },
-                modifier = Modifier.size(24.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null,
-//                    modifier = Modifier.siz
-                )
-            }
-        }
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = null,
+            tint = if (isPressed.value) pressedContentColor else contentColor,
+        )
     }
 }
+

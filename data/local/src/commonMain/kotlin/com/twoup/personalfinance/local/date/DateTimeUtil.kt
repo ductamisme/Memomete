@@ -35,8 +35,29 @@ object DateTimeUtil {
         }
     }
 
+    fun countDownDays(deleteDateTime: LocalDateTime): Int {
+        val nowTime = now().hour
+        val deleteDateTimes = deleteDateTime.hour
+
+        // Check if the deleteDateTime is in the past
+        if (deleteDateTime >= now()) {
+            return 0 // Countdown is already complete
+        }
+
+        val remainingHours = nowTime - deleteDateTimes
+        val daysRemaining = (remainingHours / 24) + if (remainingHours % 24 > 0) 1 else 0
+
+        return 30 - daysRemaining.coerceIn(0, 30)
+    }
+
+    fun formatNoteDeleteDate(dateTime: LocalDateTime): String {
+        val day = dateTime.dayOfMonth
+        return buildString {
+            append(day)
+        }
+    }
     fun isNoteOld(createdDateTime: LocalDateTime): Boolean {
-        val daysDifference = createdDateTime.hour
-        return daysDifference >= 30*24
+        val daysDifference = createdDateTime.time.hour
+        return daysDifference >= 30 * 24
     }
 }

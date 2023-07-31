@@ -19,8 +19,10 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.DrawerItem
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +47,9 @@ fun DrawerItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
+    // Use rememberUpdatedState to create a state that updates immediately upon clicking
+    val isSelectedState = rememberUpdatedState(isSelected)
+
     val colors = MaterialTheme.colors
     val typography = MaterialTheme.typography
 
@@ -58,7 +63,7 @@ fun DrawerItem(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = if (isSelected) colors.primary else colors.primaryVariant.copy(alpha = 0.6f),
+            tint = if (isSelectedState.value) colors.primary else colors.primaryVariant.copy(alpha = 0.6f),
             modifier = Modifier.size(24.dp)
         )
 
@@ -67,8 +72,10 @@ fun DrawerItem(
         Text(
             text = text,
             style = typography.subtitle1.copy(
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                color = if (isSelected) colors.primary else colors.primaryVariant.copy(alpha = 0.6f)
+                fontWeight = if (isSelectedState.value) FontWeight.Bold else FontWeight.Normal,
+                color = if (isSelectedState.value) colors.primary else colors.primaryVariant.copy(
+                    alpha = 0.6f
+                )
             ),
             modifier = Modifier.weight(1f),
             fontSize = 16.sp
@@ -77,10 +84,10 @@ fun DrawerItem(
             text = textEnd.takeIf { it.isNotEmpty() } ?: "",
             modifier = Modifier.weight(0.2f),
             fontSize = 16.sp
-
         )
     }
 }
+
 
 @Composable
 fun DrawerContent(viewModel: NoteViewModel) {
@@ -91,7 +98,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
     val mainNotesCount = notes.count { it.trash == 0L }
     val favoriteNotesCount = notes.count { it.favourite == 1L && it.trash == 0L }
     val trashNotesCount = notes.count { it.trash == 1L }
-    val folderNotesCount = notes.map{ it.folder }.distinct()
+    val folderNotesCount = notes.filter { it.trash == 0L }.map { it.folder }.distinct()
 
     val navigator = LocalNavigator.currentOrThrow
     val noteScreen = rememberScreen(SharedScreen.NoteScreen)
@@ -100,6 +107,10 @@ fun DrawerContent(viewModel: NoteViewModel) {
     val noteSettingScreen = rememberScreen(SharedScreen.SettingScreen)
     val noteTagScreen = rememberScreen(SharedScreen.NoteTagScreen)
     val noteFolderScreen = rememberScreen(SharedScreen.NoteFolderScreen)
+
+    LaunchedEffect(navigator) {
+        selectedItemIndex.toString()
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(24.dp))
@@ -135,7 +146,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
         DrawerItem(
             icon = Icons.Default.Star,
             text = "Tags",
-            textEnd ="0",
+            textEnd = "0",
             isSelected = selectedItemIndex == DrawerItem.TAGS,
             onClick = {
                 navigator.push(noteTagScreen)

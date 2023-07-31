@@ -65,7 +65,7 @@ android {
     val androidCompileSdk: String by project
     val androidTargetSdk: String by project
 
-    namespace = "com.twoup.personalfinance.domain"
+    namespace = "com.aicontent.domain"
     compileSdk = androidCompileSdk.toInt()
     defaultConfig {
         minSdk = androidMinSdk.toInt()

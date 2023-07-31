@@ -25,31 +25,19 @@ import org.koin.core.component.inject
 
 class NoteViewModel : BaseViewModel(), ScreenModel, KoinComponent {
 
-    private val useCaseInsertNote : UseCaseInsertNote by inject()
     private val useCaseGetAllNote: UseCaseGetAllNote by inject()
     private val useCaseUpdateNote: UseCaseUpdateNote by inject()
     private val useCaseDeleteAllNoteDeleted : UseCaseDeleteAllNoteDeleted by inject()
     private val useCaseDeleteNoteDeletedById : UseCaseDeleteNoteDeletedById by inject()
     private val useCaseDeleteBy30Days : UseCaseDeleteBy30Days by inject()
-//    private val useCaseGetAllTags : UseCaseGetAllTags by inject()
-    private val useCaseSearchNote : UseCaseSearchNote by inject()
 
     val notes: StateFlow<List<NoteEntity>> get() = useCaseGetAllNote.noteState.asStateFlow()
-//    val tags: StateFlow<List<TagEntity>> get() = useCaseGetAllTags.tagState.asStateFlow()
     var showUp: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var changeColorButton: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     private val _selectedItemIndex = MutableStateFlow(DrawerItem.YOUR_NOTES)
     val selectedItemIndex: MutableStateFlow<DrawerItem> get() = _selectedItemIndex
 
-    // search note
-//    private val _searchResults = useCaseSearchNote.filterNoteTags
-//    private val _searchResultsFlow = MutableStateFlow(_searchResults)
-//
-//    val searchResults: MutableStateFlow<StateFlow<List<NoteEntity>>> = _searchResultsFlow
-//    fun filterTag(tag : String) {
-//        useCaseSearchNote.filterNote(tag)
-//    }
     fun setSelectedItemIndex(item: DrawerItem) {
         _selectedItemIndex.value = item
     }

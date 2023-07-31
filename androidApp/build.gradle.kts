@@ -29,10 +29,10 @@ kotlin {
 }
 
 android {
-    namespace = "com.twoup.personalfinance.android"
+    namespace = "com.aicontent.memomate.android"
     compileSdk = 33
     defaultConfig {
-        applicationId = "com.twoup.personalfinance"
+        applicationId = "com.aicontent.memomate"
         minSdk = 26
         targetSdk = 33
         versionCode = 1

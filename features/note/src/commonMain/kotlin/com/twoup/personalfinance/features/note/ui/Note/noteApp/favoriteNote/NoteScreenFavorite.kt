@@ -47,6 +47,8 @@ class NoteScreenFavorite : Screen {
 
         LaunchedEffect(navigator) {
             viewModel.loadNotes()
+            drawerState.currentValue
+
         }
 
         ModalDrawer(

@@ -31,28 +31,15 @@ class NoteScreen : Screen {
         val addNoteScreen = rememberScreen(SharedScreen.AddNoteScreen)
         val notes by viewModel.notes.collectAsState(emptyList())
         val showUp by viewModel.showUp.collectAsState()
-//        var showUp = remember { MutableStateFlow(false) }
         val notesFromOldTONew = notes.sortedByDescending { it.created }
         var oldOrNew by remember { mutableStateOf(false) }
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         val uiState = remember { NoteUiState() }
-//        val uiState = remember { EditNoteUiState() }
         LaunchedEffect(navigator) {
             viewModel.loadNotes()
+            drawerState.currentValue
         }
-
-        val note = NoteEntity(
-            uiState.id,
-            uiState.title,
-            uiState.description,
-            uiState.created,
-            uiState.deleteCreated,
-            uiState.favourite,
-            uiState.trash,
-            uiState.tag,
-            uiState.folder
-        )
 
         ModalDrawer(
             drawerState = drawerState,

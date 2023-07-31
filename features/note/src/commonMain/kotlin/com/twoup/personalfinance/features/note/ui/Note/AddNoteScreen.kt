@@ -5,14 +5,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import com.twoup.personalfinance.features.note.ui.Note.noteApp.viewModel.AddNoteUiState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,18 +19,15 @@ import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -61,7 +55,7 @@ class AddNoteScreen() : Screen {
     @Composable
     fun AddScreen() {
         val viewModel = rememberScreenModel { AddNoteViewModel() }
-        val folder by viewModel.folders.collectAsState()
+        val folders by viewModel.folders.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
         val noteScreen = rememberScreen(SharedScreen.NoteScreen)
         val uiState = remember { AddNoteUiState() }
@@ -70,9 +64,9 @@ class AddNoteScreen() : Screen {
         var isHintDescriptionVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
         var showTagDiaLog by remember { mutableStateOf(false) }
         val isHintTagVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
-        val uniqueFolders = folder.map { it.folder }.distinct()
+        val uniqueFolders = folders.filter { it.trash == 0L }.map { it.folder }.distinct()
         val currentlySelectedTag = remember { mutableStateOf("") }
-        val uniqueFoldersState = rememberUpdatedState(uniqueFolders)
+        var shouldLoadFolderData by remember { mutableStateOf(true) }
 
         val note = NoteEntity(
             uiState.id,
@@ -94,7 +88,7 @@ class AddNoteScreen() : Screen {
                             "Add Note",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onPrimary
+                            color = colors.onPrimary
                         )
                     },
                     navigationIcon = {
@@ -177,12 +171,20 @@ class AddNoteScreen() : Screen {
                 }
             }
 
+            LaunchedEffect(key1 = shouldLoadFolderData) {
+                if (shouldLoadFolderData) {
+                    viewModel.loadFolder()
+                    // Set it to false after loading the data to prevent reloading when the composable recomposes
+                    shouldLoadFolderData = false
+                }
+            }
+
             AnimatedVisibility(
                 visible = showTagDiaLog,
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically()
             ) {
-                LaunchedEffect(navigator) {
+                LaunchedEffect(key1 = Unit) {
                     viewModel.loadFolder()
                 }
                 Box(
@@ -229,7 +231,7 @@ class AddNoteScreen() : Screen {
                             }
 
                             AnimatedVisibility(
-                                visible = folder.isNotEmpty(),
+                                visible = folders.isNotEmpty(),
                                 enter = fadeIn() + slideInVertically(),
                                 exit = fadeOut() + slideOutVertically()
                             ) {
@@ -239,7 +241,7 @@ class AddNoteScreen() : Screen {
                                     verticalArrangement = Arrangement.spacedBy(20.dp),
                                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
-                                    itemsIndexed(uniqueFoldersState.value) { index, buttonTitle ->
+                                    itemsIndexed(uniqueFolders) { _, buttonTitle ->
                                         val isPressed = buttonTitle == currentlySelectedTag.value
                                         CustomTextButton(
                                             text = buttonTitle,
@@ -288,7 +290,8 @@ class AddNoteScreen() : Screen {
                                 CustomItem(
                                     onClick = {
                                         viewModel.updateNote(note.copy(folder = uiState.folder))
-                                        viewModel.loadFolder()
+//                                        viewModel.loadFolder()
+                                        shouldLoadFolderData = true // Set it to true to trigger the reload when the composable recomposes
                                     },
                                 )
                             }

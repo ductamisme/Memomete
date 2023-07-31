@@ -57,8 +57,8 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
         var isHintDescriptionVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
         var showTagDiaLog by remember { mutableStateOf(false) }
         val isHintTagVisible by remember { mutableStateOf(uiState.description.isEmpty()) }
-        val tags by viewModel.folders.collectAsState()
-        val uniqueFolders = tags.map { it.folder }.distinct()
+        val folders by viewModel.folders.collectAsState()
+        val uniqueFolders = folders.filter { it.trash == 0L }.map { it.folder }.distinct()
         val currentlySelectedTag = remember { mutableStateOf("") }
         val uniqueFoldersState = rememberUpdatedState(uniqueFolders)
 
@@ -223,7 +223,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                                 }
 
                                 AnimatedVisibility(
-                                    visible = tags.isNotEmpty(),
+                                    visible = folders.isNotEmpty(),
                                     enter = fadeIn() + slideInVertically(),
                                     exit = fadeOut() + slideOutVertically()
                                 ) {

@@ -2,9 +2,13 @@ package com.twoup.personalfinance.local.date
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.ExperimentalTime
 
 object DateTimeUtil {
     fun now(): LocalDateTime {
@@ -36,28 +40,52 @@ object DateTimeUtil {
     }
 
     fun countDownDays(deleteDateTime: LocalDateTime): Int {
-        val nowTime = now().hour
-        val deleteDateTimes = deleteDateTime.hour
+//        val nowTime = now().hour
+//        val deleteDateTimes = deleteDateTime.hour
+//        // Check if the deleteDateTime is in the past
+//        if (deleteDateTime >= now()) {
+//            return 0 // Countdown is already complete
+//        }
+//        val remainingHours = nowTime - deleteDateTimes
+//        val daysRemaining = (remainingHours / 24) + if (remainingHours % 24 > 0) 1 else 0
+//        return 30 - daysRemaining.coerceIn(0, 30)
+        // Get the current time
+        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
-        // Check if the deleteDateTime is in the past
-        if (deleteDateTime >= now()) {
-            return 0 // Countdown is already complete
-        }
+        // Calculate the time difference between deleteDateTime and now
+        val diffInDays = calculateDaysDifference(deleteDateTime, now)
 
-        val remainingHours = nowTime - deleteDateTimes
-        val daysRemaining = (remainingHours / 24) + if (remainingHours % 24 > 0) 1 else 0
+        val remainingDays = 30 - diffInDays
 
-        return 30 - daysRemaining.coerceIn(0, 30)
+        return remainingDays.coerceIn(1, 30)
     }
 
-    fun formatNoteDeleteDate(dateTime: LocalDateTime): String {
-        val day = dateTime.dayOfMonth
-        return buildString {
-            append(day)
+    fun isNoteOld(deleteDateTime: LocalDateTime): Boolean {
+        // Get the current time
+        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+
+        // Calculate the time difference between deleteDateTime and now
+        val diffInDays = calculateDaysDifference(deleteDateTime, now)
+
+        // Check if the time difference is exactly 30 days
+        return when (diffInDays) {
+            30 -> true
+            else -> false
         }
     }
-    fun isNoteOld(createdDateTime: LocalDateTime): Boolean {
-        val daysDifference = createdDateTime.time.hour
-        return daysDifference >= 30 * 24
+
+    private fun calculateDaysDifference(dateTime1: LocalDateTime, dateTime2: LocalDateTime): Int {
+        val daysInMonth1 = dateTime1.dayOfMonth + daysInYear(dateTime1.year) + if (isLeapYear(dateTime1.year) && dateTime1.month.ordinal > Month.FEBRUARY.ordinal) 1 else 0
+        val daysInMonth2 = dateTime2.dayOfMonth + daysInYear(dateTime2.year) + if (isLeapYear(dateTime2.year) && dateTime2.month.ordinal > Month.FEBRUARY.ordinal) 1 else 0
+
+        return (dateTime2.year - dateTime1.year) * 365 + (daysInMonth2 - daysInMonth1) + (dateTime2.month.ordinal - dateTime1.month.ordinal)
+    }
+
+    private fun daysInYear(year: Int): Int {
+        return if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) 1 else 0
+    }
+
+    private fun isLeapYear(year: Int): Boolean {
+        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
     }
 }

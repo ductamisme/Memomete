@@ -21,7 +21,6 @@ class NoteFolderScreen : Screen {
         val viewModel = rememberScreenModel { NoteViewModel() }
         val navigator = LocalNavigator.currentOrThrow
         val searchScreen = rememberScreen(SharedScreen.SearchNote)
-        val addNoteScreen = rememberScreen(SharedScreen.AddNoteScreen)
         val avatarScreen = rememberScreen(SharedScreen.AvatarScreen)
         val notes by viewModel.notes.collectAsState(emptyList())
         val showUp by viewModel.showUp.collectAsState()
@@ -32,6 +31,7 @@ class NoteFolderScreen : Screen {
 
         LaunchedEffect(navigator) {
             viewModel.loadNotes()
+            drawerState.currentValue
         }
 
         ModalDrawer(

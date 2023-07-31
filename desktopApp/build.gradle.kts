@@ -20,7 +20,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "com.twoup.personalfinance.MainKt"
+        mainClass = "com.aicontent.memomate.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
@@ -35,7 +35,7 @@ compose.desktop {
 
             macOS {
                 // Use -Pcompose.desktop.mac.sign=true to sign and notarize.
-                bundleID = "com.twoup.personalfinance"
+                bundleID = "com.aicontent.memomate"
             }
         }
     }

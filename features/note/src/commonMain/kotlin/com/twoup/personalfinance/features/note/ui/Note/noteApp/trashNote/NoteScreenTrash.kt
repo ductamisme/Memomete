@@ -44,6 +44,7 @@ class NoteScreenTrash : Screen {
                 notes.forEach{ note ->
                     note.id?.let { viewModel.deleteNoteBy30Days(it, note.deleteCreated) }
                 }
+            drawerState.currentValue
         }
 
         ModalDrawer(

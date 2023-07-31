@@ -33,7 +33,7 @@ class NoteTagScreen : Screen {
 
         LaunchedEffect(navigator) {
             viewModel.loadNotes()
-//            viewModel.loadTags()
+            drawerState.currentValue
         }
 
         ModalDrawer(

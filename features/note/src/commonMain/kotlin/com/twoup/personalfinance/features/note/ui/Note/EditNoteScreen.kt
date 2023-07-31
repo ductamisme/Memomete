@@ -60,7 +60,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
         val folders by viewModel.folders.collectAsState()
         val uniqueFolders = folders.filter { it.trash == 0L }.map { it.folder }.distinct()
         val currentlySelectedTag = remember { mutableStateOf("") }
-        val uniqueFoldersState = rememberUpdatedState(uniqueFolders)
+        var shouldLoadFolderData by remember { mutableStateOf(true) }
 
         Napier.d(tag = "Test edit note ", message = uiState.id.toString())
         Napier.d(tag = "Test edit note ", message = uiState.title)
@@ -171,14 +171,24 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
+                LaunchedEffect(key1 = shouldLoadFolderData) {
+                    if (shouldLoadFolderData) {
+                        viewModel.loadFolder()
+                        // Set it to false after loading the data to prevent reloading when the composable recomposes
+                        shouldLoadFolderData = false
+                    }
+                }
+
                 AnimatedVisibility(
                     visible = showTagDiaLog,
                     enter = fadeIn() + slideInVertically(),
                     exit = fadeOut() + slideOutVertically()
                 ) {
-                    LaunchedEffect(navigator) {
+
+                    LaunchedEffect(key1 = Unit) {
                         viewModel.loadFolder()
                     }
+
                     Box(
                         modifier = Modifier
                             .offset(y = (400).dp)
@@ -233,7 +243,7 @@ class EditNoteScreen(private val note: NoteEntity) : Screen {
                                         verticalArrangement = Arrangement.spacedBy(20.dp),
                                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                                     ) {
-                                        itemsIndexed(uniqueFoldersState.value) { index, buttonTitle ->
+                                        itemsIndexed(uniqueFolders) { _, buttonTitle ->
                                             val isPressed = buttonTitle == currentlySelectedTag.value
                                             CustomTextButton(
                                                 text = buttonTitle,

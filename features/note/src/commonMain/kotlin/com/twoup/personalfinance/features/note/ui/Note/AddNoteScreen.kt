@@ -184,9 +184,11 @@ class AddNoteScreen() : Screen {
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically()
             ) {
+
                 LaunchedEffect(key1 = Unit) {
                     viewModel.loadFolder()
                 }
+
                 Box(
                     modifier = Modifier
                         .offset(y = (400).dp)

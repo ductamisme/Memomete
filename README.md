@@ -1,7 +1,7 @@
 # Memomete
 # Memomate: Your Personal Note and Reminder App
 
-Description of your project goes here.
+Memomate is a powerful note-taking app that helps you stay organized by allowing you to create, manage, and set reminders for your notes. Never forget an important task or idea again!
 
 ## Table of Contents
 

@@ -20,4 +20,3 @@ fun NoteDatabase.toNote(): NoteEntity{
 }
 
 
-

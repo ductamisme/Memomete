@@ -36,6 +36,7 @@ class NoteScreen : Screen {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         val uiState = remember { NoteUiState() }
+
         LaunchedEffect(navigator) {
             viewModel.loadNotes()
             drawerState.currentValue

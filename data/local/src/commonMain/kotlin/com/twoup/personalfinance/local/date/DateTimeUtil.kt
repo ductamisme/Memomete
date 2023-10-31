@@ -36,19 +36,11 @@ object DateTimeUtil {
             append(hour)
             append(":")
             append(minute)
+
         }
     }
 
     fun countDownDays(deleteDateTime: LocalDateTime): Int {
-//        val nowTime = now().hour
-//        val deleteDateTimes = deleteDateTime.hour
-//        // Check if the deleteDateTime is in the past
-//        if (deleteDateTime >= now()) {
-//            return 0 // Countdown is already complete
-//        }
-//        val remainingHours = nowTime - deleteDateTimes
-//        val daysRemaining = (remainingHours / 24) + if (remainingHours % 24 > 0) 1 else 0
-//        return 30 - daysRemaining.coerceIn(0, 30)
         // Get the current time
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 

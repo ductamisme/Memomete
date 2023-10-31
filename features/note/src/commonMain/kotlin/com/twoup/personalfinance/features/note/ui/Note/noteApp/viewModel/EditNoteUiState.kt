@@ -13,7 +13,6 @@ class EditNoteUiState(
     idTag: Long = 0L,
     nameTag: String = "",
 ) {
-
     var id by mutableStateOf(note.id)
     var title by mutableStateOf(note.title)
     var description by mutableStateOf(note.description)

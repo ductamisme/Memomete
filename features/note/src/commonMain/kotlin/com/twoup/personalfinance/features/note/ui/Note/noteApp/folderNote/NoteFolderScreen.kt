@@ -51,20 +51,7 @@ class NoteFolderScreen : Screen {
                             viewModel
                         )
                     },
-                    backgroundColor = MaterialTheme.colors.background,
-//                    floatingActionButton = {
-//                        FloatingActionButton(
-//                            onClick = { navigator.push(addNoteScreen) },
-//                            backgroundColor = MaterialTheme.colors.primary,
-//                        ) {
-//                            Icon(
-//                                imageVector = Icons.Default.Add,
-//                                contentDescription = "Add",
-//                                tint = MaterialTheme.colors.onPrimary
-//                            )
-//                        }
-//                    },
-//                    floatingActionButtonPosition = FabPosition.End
+                    backgroundColor = MaterialTheme.colors.background
                 ) {
                     NoteFolderViews(
                         notes = if (oldOrNew) notes else notesFromOldTONew, viewModel = viewModel,

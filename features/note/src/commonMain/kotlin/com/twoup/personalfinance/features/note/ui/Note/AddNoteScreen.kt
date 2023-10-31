@@ -292,7 +292,6 @@ class AddNoteScreen() : Screen {
                                 CustomItem(
                                     onClick = {
                                         viewModel.updateNote(note.copy(folder = uiState.folder))
-//                                        viewModel.loadFolder()
                                         shouldLoadFolderData = true // Set it to true to trigger the reload when the composable recomposes
                                     },
                                 )

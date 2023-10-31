@@ -49,7 +49,6 @@ fun DrawerItem(
 ) {
     // Use rememberUpdatedState to create a state that updates immediately upon clicking
     val isSelectedState = rememberUpdatedState(isSelected)
-
     val colors = MaterialTheme.colors
     val typography = MaterialTheme.typography
 
@@ -92,7 +91,7 @@ fun DrawerItem(
 @Composable
 fun DrawerContent(viewModel: NoteViewModel) {
     val colors = MaterialTheme.colors
-    val selectedItemIndex by viewModel.selectedItemIndex.collectAsState(0)
+    val selectedItemIndex by viewModel.selectedItemIndex.collectAsState()
     val notes by viewModel.notes.collectAsState()
 
     val mainNotesCount = notes.count { it.trash == 0L }
@@ -128,6 +127,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
             textEnd = mainNotesCount.toString(),
             isSelected = selectedItemIndex == DrawerItem.YOUR_NOTES,
             onClick = {
+                navigator.pop()
                 navigator.push(noteScreen)
                 viewModel.setSelectedItemIndex(DrawerItem.YOUR_NOTES)
             }
@@ -138,6 +138,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
             textEnd = favoriteNotesCount.toString(),
             isSelected = selectedItemIndex == DrawerItem.FAVORITES,
             onClick = {
+                navigator.pop()
                 navigator.push(noteFavoriteScreen)
                 viewModel.setSelectedItemIndex(DrawerItem.FAVORITES)
             }
@@ -149,6 +150,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
             textEnd = "0",
             isSelected = selectedItemIndex == DrawerItem.TAGS,
             onClick = {
+                navigator.pop()
                 navigator.push(noteTagScreen)
                 viewModel.setSelectedItemIndex(DrawerItem.TAGS)
             }
@@ -160,6 +162,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
             textEnd = trashNotesCount.toString(),
             isSelected = selectedItemIndex == DrawerItem.TRASH,
             onClick = {
+                navigator.pop()
                 navigator.push(noteTrashScreen)
                 viewModel.setSelectedItemIndex(DrawerItem.TRASH)
             }
@@ -171,6 +174,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
             isSelected = selectedItemIndex == DrawerItem.FOLDERS,
             textEnd = folderNotesCount.size.toString(),
             onClick = {
+                navigator.pop()
                 navigator.push(noteFolderScreen)
                 viewModel.setSelectedItemIndex(DrawerItem.FOLDERS)
             }
@@ -182,6 +186,7 @@ fun DrawerContent(viewModel: NoteViewModel) {
             textEnd = "",
             isSelected = selectedItemIndex == DrawerItem.SETTINGS,
             onClick = {
+                navigator.pop()
                 navigator.push(noteSettingScreen)
                 viewModel.setSelectedItemIndex(DrawerItem.SETTINGS)
             }

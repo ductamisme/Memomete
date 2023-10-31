@@ -82,7 +82,6 @@ fun CustomTextButton(
 @Composable
 fun CustomItem(
     onClick: () -> Unit, // Pass a lambda function to receive the clicked tag title
-//    onDeleteClick:(String)  -> Unit,
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(16.dp),
     backgroundColor: Color = Color.White,

@@ -7,7 +7,6 @@ import com.twoup.personalfinance.model.note.local.NoteEntity
 import com.twoup.personalfinance.model.noteDelete.local.NoteDeleteEntity
 
 class EditNoteDeleteUiState(note: NoteEntity) {
-
     var id by mutableStateOf(note.id)
     var title by mutableStateOf(note.title)
     var description by mutableStateOf(note.description)

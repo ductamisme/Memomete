@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class UseCaseDeleteNoteById(private val dataSource: NoteLocalDataSource) {
-
     @OptIn(DelicateCoroutinesApi::class)
     fun deleteNoteById(id:Long, loadNote: Unit){
         GlobalScope.launch {

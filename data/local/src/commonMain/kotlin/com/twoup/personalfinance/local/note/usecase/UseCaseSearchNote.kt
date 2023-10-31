@@ -44,7 +44,6 @@ class UseCaseSearchNote(private val dataSource: NoteLocalDataSource) {
             }
         }
     }
-
     @OptIn(DelicateCoroutinesApi::class)
     fun filterNote(tag: String) {
 //        note.title

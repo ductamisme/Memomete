@@ -12,7 +12,10 @@ Memomate is a powerful note-taking app that helps you stay organized by allowing
 5. [License](#license)
 
 ## Images
-
+![My Image](![Screenshot_20231031-153631.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153631.jpg))
+![My Image](![Screenshot_20231031-153711.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153711.jpg))
+![My Image](![Screenshot_20231031-153711.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153925.jpg))
+![My Image](![Screenshot_20231031-153711.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153953.jpg))
 
 ## Features
 
@@ -29,7 +32,7 @@ I am developing the following features and will introduce them to you as soon as
 ## Installation
 
 - Clone the Memomate repository to your local machine:https://github.com/ductamisme/Memomete.git
-- My app uses kmm so make sure you install install plugin kotlin multiplatform mobile for AS and Xcode
+- My app uses kmm so make sure you install install plugin kotlin multiplatform mobile for AS 
 
 ## Usage
 

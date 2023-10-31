@@ -13,7 +13,6 @@ Description of your project goes here.
 
 ## Images
 
-![Alt Text]([/images/your_image_file.png](https://drive.google.com/file/d/1_8FVgkWp6_hF_vtwWpfg36Hk9MGRKiXV/view?usp=sharing))
 
 ## Features
 

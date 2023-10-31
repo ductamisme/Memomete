@@ -12,10 +12,10 @@ Memomate is a powerful note-taking app that helps you stay organized by allowing
 5. [License](#license)
 
 ## Images
-![My Image](![Screenshot_20231031-153631.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153631.jpg))
-![My Image](![Screenshot_20231031-153711.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153711.jpg))
-![My Image](![Screenshot_20231031-153711.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153925.jpg))
-![My Image](![Screenshot_20231031-153711.jpg](androidApp%2Fsrc%2FandroidMain%2Fres%2FScreenshot_20231031-153953.jpg))
+![My Image](androidApp/src/androidMain/res/Screenshot_20231031-153631.jpg)
+![My Image](androidApp/src/androidMain/res/Screenshot_20231031-153711.jpg)
+![My Image](androidApp/src/androidMain/res/Screenshot_20231031-153925.jpg)
+![My Image](androidApp/src/androidMain/res/Screenshot_20231031-153953.jpg)
 
 ## Features
 
